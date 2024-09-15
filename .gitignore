@@ -1,0 +1,7 @@
+.vscode/
+himitsu/
+scripts/
+__pycache__/
+*.pyc
+
+

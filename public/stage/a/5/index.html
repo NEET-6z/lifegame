@@ -1,0 +1,173 @@
+
+    <!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPG - a5</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <div id="header"></div>
+  <div id="page">
+  <div id="gameui" hidden>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-auto col-md-3 col-xl-3 px-sm-2 px-0 d-flex flex-column mt-4">
+          <!-- ステージ説明 -->
+          <div id="sidearea" class="p-3 mb-4 bg-light border flex-grow-1">
+            <h2>A4 グライダー</h2>
+<div>
+  右端一列に一度以上生存マスが存在するように
+</div>
+          </div>
+
+          <div id="stagearea" >
+            <div class="p-3 mb-4 bg-light border">
+              <h5>ステージの状態</h5>
+              <div id="clearStatus">このステージは未クリアです。</div>
+              <button id="lastClearData" class="border-0" hidden>前回のクリアデータを読み込む</button>
+
+            </div>
+
+            <div class="p-3">
+              <div id="stagebutton" class="mb-4 d-flex flex-column gap-2">
+                <a href="/stage/a/4/tips.html" type="button" id="selectStage" class="btn btn-danger" >戻る</a>
+                <a href="/stage/" type="button" id="selectStage" class="btn btn-warning">ステージ選択</a>
+                <a href="/stage/a/5/tips.html" type="button" id="nextStage" class="btn btn-primary disabled">次へ進む</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Canvas -->
+        <div class="col-5 col-md-5 col-xl-5">
+          <div class="d-flex justify-content-center" id="infoarea">
+          </div>
+          <canvas id="canvas" class="border border-secondary" style="width:100%;aspect-ratio:1/1;">
+          </canvas>
+        </div>
+        <!-- Controls -->
+        <div class="col-4 col-md-4 col-xl-4">
+          <div class="text-end mb-4"><a href="#" id="clearCacheLink" hidden>キャッシュをクリアしてリロード</a></div>
+          <div class="d-flex flex-column h-100">
+            <!-- Grid Size and Speed Inputs -->
+            <div class="d-flex mb-3">
+              <div class="input-group me-2 flex-grow-1">
+                <span class="input-group-text" id="size-addon">Grid Size:</span>
+                <input type="number" id="size" class="form-control" aria-label="Grid Size" aria-describedby="size-addon"
+                  min="1" max="100" value="10">
+              </div>
+              <div class="input-group flex-grow-1">
+                <span class="input-group-text" id="speed-addon">Speed (ms):</span>
+                <input type="number" id="speed" class="form-control" aria-label="Speed" aria-describedby="speed-addon"
+                  min="20" max="1000" step="20" value="200">
+              </div>
+            </div>
+            <!-- Buttons Group with Game State Indicator -->
+            <div class="btn-group mb-3" role="group">
+              <button id="start" class="btn btn-primary">Start</button>
+              <button id="stop" class="btn btn-secondary">Stop</button>
+              <button id="undo" class="btn btn-warning">Undo</button>
+              <button id="clear" class="btn btn-danger">Clear</button>
+            </div>
+            <div class="mb-2" hidden>
+              <button id="random" class="btn btn-success">randomに生成する</button>
+            </div>
+            <div id="editRuleButtonsContainer"></div>
+            <div class=""><button id="state-addon" class="btn btn-warning">状態を追加する</button></div>
+          </div>
+        </div>
+
+        <div id="ruleEditorModal" class="modal fade" tabindex="-1" aria-labelledby="ruleEditorModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ruleEditorModalLabel"></h5>
+              </div>
+              <div class="modal-body">
+                <div class="transitionRulesContainer"></div>
+                <button class="btn btn-secondary mt-3 addTransitionRule">遷移ルールを追加</button>
+                <div class="mt-3" id="defaultTransitionContainer">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                <button type="button" class="btn btn-primary saveRules">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Name & Color Editor Modal -->
+        <div id="nameColorEditorModal" class="modal fade" tabindex="-1" aria-labelledby="nameColorEditorModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="nameColorEditorModalLabel">名前と色の編集</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="stateNameInput" class="form-label">名前</label>
+                  <input type="text" id="stateNameInput" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">色</label>
+                  <div id="colorOptions" class="d-flex flex-wrap">
+                    <!-- Color options will be dynamically inserted here -->
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                <button type="button" class="btn btn-primary" id="saveNameColor">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="stageClearModal" tabindex="-1" aria-labelledby="stageClearModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="stageClearModalLabel">ステージクリア！</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+              </div>
+              <div class="modal-body p-4" id="stageClearMessage">
+                a5クリア！
+              </div>
+              <div class="modal-footer">
+                <!-- 閉じるボタン -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                <!-- 次のステージへ進むボタン -->
+                <a href="/stage/a/5/tips.html" type="button" class="btn btn-primary" id="nextStageButton">次へ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+
+    <script src="/js/common/header.js"></script>
+    <script>
+      document.getElementById("clearCacheLink")?.addEventListener("click", () => {
+        
+        localStorage.setItem("shouldClearCache", "true");
+        window.location.reload();
+      });
+      
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="game.js"></script>
+</body>
+
+</html>
