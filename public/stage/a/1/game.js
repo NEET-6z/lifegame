@@ -41,7 +41,7 @@ class thisGameEvaluator extends GameEvaluator{
     }
     
     this.updateInfo(this.customInfo);
-    return res
+    return ch;
   }
 }
 

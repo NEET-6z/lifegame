@@ -24,18 +24,18 @@ class StageA2Evaluator extends GameEvaluator{
   }
 
   evaluateTurn(){
-    let res = false;
+    let ch = false;
 
     this.customInfo["turn"]++;
     if(this.cmis0() && JSON.stringify(this.preBoard) == JSON.stringify(this.gameManager.board.cells)){
       this.customInfo["complete"] = 1;
-      res = true;
+      ch = true;
     }
     
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
     
     this.updateInfo(this.customInfo);
-    return res
+    return ch
   }
 }
 

@@ -33,14 +33,14 @@ class StageA3Evaluator extends GameEvaluator{
   hash(cells){
     let base = this.gameManager.stateManager.getAllState().length;
     let mod = 1000000;
-    let res = 0;
+    let ch = 0;
     for(let i = 0;i<this.gameManager.board.size;i++){
       for(let j = 0;j<this.gameManager.board.getWsize(i);j++){
-        res = (res*base+this.gameManager.board.getCell(j,i))%mod;
+        ch = (ch*base+this.gameManager.board.getCell(j,i))%mod;
       }
     }
 
-    return res;
+    return ch;
   }
 
   evaluateTurn(){
