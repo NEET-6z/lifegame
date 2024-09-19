@@ -14,7 +14,7 @@ const config = new Config({
 });
 
 
-class thisGameEvaluator extends GameEvaluator{
+class StageA1Evaluator extends GameEvaluator{
   constructor(){
     super();
   }
@@ -47,7 +47,7 @@ class thisGameEvaluator extends GameEvaluator{
 
 
 
-const gameEvaluator = new thisGameEvaluator();
+const gameEvaluator = new StageA1Evaluator();
 
 const board = new RectangularBoard();
 const stateManager = new StateManager();

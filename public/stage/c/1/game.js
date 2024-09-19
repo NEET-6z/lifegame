@@ -22,14 +22,14 @@ class StageC1Evaluator extends GameEvaluator{
   }
 
   evaluateTurn(){
-    let res = false;
+    let ch = false;
 
     this.customInfo["turn"]++;
 
     if(this.cmis0() && this.customInfo["turn"]==1){
       if(JSON.stringify(this.preBoard) == JSON.stringify(this.gameManager.board.cells)){
         this.customInfo["complete"] = 1;
-        res = true;
+        ch = true;
       }
       else{
         this.customInfo["complete"] = -1;
@@ -41,7 +41,7 @@ class StageC1Evaluator extends GameEvaluator{
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
     
     this.updateInfo(this.customInfo);
-    return res
+    return ch
   }
 }
 

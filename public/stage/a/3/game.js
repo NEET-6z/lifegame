@@ -59,9 +59,9 @@ class StageA3Evaluator extends GameEvaluator{
       this.customInfo["period length"] = this.customInfo["turn"]-this.history[hash];
     }
 
-    if(this.customInfo["turn"]>=10){
+    if(this.customInfo["turn"]>=20){
       const p = this.queue.pop();
-      if(this.customInfo['turn']-10>=this.history[p]){
+      if(this.customInfo['turn']-20>=this.history[p]){
         this.history[p] = -1;
       }
     }

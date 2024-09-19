@@ -135,58 +135,14 @@ export default class GameManager {
     this.animationId = setTimeout(() => this.gameLoop(), this.speed);
   }
 
-  stageComplete() {
-    this.saveToLocalStorage();
-    if (!this.completeFlag) {
-      this.completeFlag = true;
-      this.showCompletionScreen();
-    }
-
-    if (!localStorage.getItem("stageProgress")) {
-      localStorage.setItem(
-        "stageProgress",
-        JSON.stringify({ a: 0, b: 0, c: 0 })
-      );
-    }
-    const progress = LSStageProgress.get();
-    const url = window.location.pathname;
-
-    const path = url.split("/").filter((segment) => segment);
-    progress[path[1]] = Math.max(parseInt(progress[path[1]], 10), path[2]);
-
-    LSStageProgress.set(progress)
-  }
-
-  updateStageComplete() {
-    document.getElementById("clearStatus").innerHTML = "クリア済み";
-    document.getElementById("lastClearData").hidden = false;
-    document.getElementById("lastClearData").addEventListener("click", (e) => {
-      this.loadFromLocalStorage();
-      this.draw();
-    });
-
-    document.getElementById("nextStage").classList.remove("disabled");
-    this.draw();
-  }
-
-  showCompletionScreen(message = "Stage Completed!") {
-    this.updateStageComplete();
-
-    document.getElementById("stageClearMessage").textContent = message;
-
-    var stageClearModal = new bootstrap.Modal(
-      document.getElementById("stageClearModal")
-    );
-    stageClearModal.show();
-  }
   
-
+  
   resizeBoard(size) {
     this.clear();
     this.board.resize(size);
     this.draw();
   }
-
+  
   setSpeed(newSpeed) {
     this.speed = newSpeed;
     if (this.isPlaying) {
@@ -200,7 +156,7 @@ export default class GameManager {
     this.board.setCell(x, y, v);
     this.draw();
   }
-
+  
   saveToLocalStorage() {
     const data = {
       gameManager: {
@@ -224,16 +180,16 @@ export default class GameManager {
 
   loadFromLocalStorage() {
     if (this.isPlaying) return;
-
+    
     const data = LSGameData.get(this.config.name);
-
+    
     if (data) {
       this.speed = data.gameManager.speed;
       this.selectedStateId = data.gameManager.selectedStateId;
 
       this.board.resize(data.board.size);
       this.board.cells = JSON.parse(JSON.stringify(data.board.cells));
-
+      
       this.stateManager.states = data.stateManager.states;
       for (const id in this.stateManager.states) {
         const stateData = this.stateManager.states[id];
@@ -247,5 +203,50 @@ export default class GameManager {
       }
       this.stateManager.nextStateId = data.stateManager.nextStateId;
     }
+  }
+  
+  stageComplete() {
+    this.saveToLocalStorage();
+    if (!this.completeFlag) {
+      this.completeFlag = true;
+      this.showCompletionScreen();
+    }
+  
+    if (!localStorage.getItem("stageProgress")) {
+      localStorage.setItem(
+        "stageProgress",
+        JSON.stringify({ a: 0, b: 0, c: 0 })
+      );
+    }
+    const progress = LSStageProgress.get();
+    const url = window.location.pathname;
+  
+    const path = url.split("/").filter((segment) => segment);
+    progress[path[1]] = Math.max(parseInt(progress[path[1]], 10), path[2]);
+  
+    LSStageProgress.set(progress)
+  }
+  
+  updateStageComplete() {
+    document.getElementById("clearStatus").innerHTML = "クリア済み";
+    document.getElementById("lastClearData").hidden = false;
+    document.getElementById("lastClearData").addEventListener("click", (e) => {
+      this.loadFromLocalStorage();
+      this.draw();
+    });
+  
+    document.getElementById("nextStage").classList.remove("disabled");
+    this.draw();
+  }
+  
+  showCompletionScreen(message = "Stage Completed!") {
+    this.updateStageComplete();
+  
+    document.getElementById("stageClearMessage").textContent = message;
+  
+    var stageClearModal = new bootstrap.Modal(
+      document.getElementById("stageClearModal")
+    );
+    stageClearModal.show();
   }
 }
