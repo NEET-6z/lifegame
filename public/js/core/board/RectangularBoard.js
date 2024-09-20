@@ -6,7 +6,7 @@ export class RectangularBoard extends Board {
   constructor(defaultsize, defaultCells, lockedCells) {
     super(defaultsize, defaultCells, lockedCells);
     this.shape = "rectangle";
-    
+  
   }
 
   getNeighbors(x, y) {
@@ -52,8 +52,7 @@ export class RectangularBoard extends Board {
     const rect = canvas.getBoundingClientRect();
     const ctx = canvas.getContext("2d");
 
-    const gridColor = "#555555";
-    const gridLineWidth = 2;
+    
 
     canvas.width = rect.width;
     canvas.height = rect.height;
@@ -66,12 +65,11 @@ export class RectangularBoard extends Board {
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         const stateId = this.getCell(x, y);
-        console.log(stateId);
         const state = stateManager.getState(stateId); 
         const xPos = x * cellSize + halfCellSize;
         const yPos = y * cellSize + halfCellSize;
 
-        const gridcolor = this.isCellLocked(x,y)? "red": gridColor;
+        const gridcolor = this.isCellLocked(x,y)? this.lockedgridColor : this.gridColor;
         
         drawRegularPolygon(
           ctx,
@@ -82,7 +80,7 @@ export class RectangularBoard extends Board {
           45,
           gridcolor,
           state.color,
-          gridLineWidth
+          this.gridLineWidth
         );
       }
     }

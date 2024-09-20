@@ -7,11 +7,15 @@ export default class Board {
     this.defaultCells = defaultCells || undefined;
     this.lockedCells = lockedCells || undefined;
     this.historyCells = [this.generateCells(1)];
-
     this.startCells = undefined;
     this.cells = undefined;
 
     this.initializeBoard();
+
+
+    this.gridColor = "#555555";
+    this.lockedgridColor = "red";
+    this.gridLineWidth = 1;
 
   }
 

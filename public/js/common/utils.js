@@ -1,8 +1,3 @@
-export function Array2(rows, cols, initialValue = null) {
-  return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => initialValue)
-  );
-}
 
 export function drawRegularPolygon(
   ctx,
@@ -19,7 +14,6 @@ export function drawRegularPolygon(
     console.error("Polygon must have at least 3 sides.");
     return;
   }
-
   // スタイルを設定
   ctx.strokeStyle = strokeStyle;
   ctx.fillStyle = fillStyle;
@@ -40,7 +34,6 @@ export function drawRegularPolygon(
     points.push({ x, y });
   }
 
-  // ポリゴンを描画
   ctx.beginPath();
   ctx.moveTo(points[0].x, points[0].y);
   for (let i = 1; i < points.length; i++) {

@@ -104,7 +104,7 @@ export class TriangularBoard extends Board {
     const ctx = canvas.getContext("2d");
 
     const gridColor = "#555555";
-    const gridLineWidth = 2;
+    const gridLineWidth = 1;
 
     canvas.width = rect.width;
     canvas.height = rect.height;
@@ -129,7 +129,7 @@ export class TriangularBoard extends Board {
 
         ctx.fillStyle = state.color || "#FFFFFF";
 
-        const gridcolor = this.isCellLocked(x,y)? "red": gridColor;
+        const gridcolor = this.isCellLocked(x,y)? this.lockedgridColor : this.gridColor;
 
         drawRegularPolygon(
           ctx,
@@ -140,7 +140,7 @@ export class TriangularBoard extends Board {
           angle,
           gridcolor,
           state.color || "#FFFFFF",
-          gridLineWidth
+          this.gridLineWidth
         );
       }
     }

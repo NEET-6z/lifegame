@@ -1,7 +1,6 @@
-// src/main.js
 import { Config } from "../../js/config/Config.js";
 import { RectangularBoard } from "../../js/core/board/RectangularBoard.js";
-import GameManager from "../../js/core/GameManager.js";
+import { GameManager } from "../../js/core/GameManager.js";
 import { GameEvaluator } from "../../js/core/stage/GameEvaluator.js";
 import { StateManager } from "../../js/core/StateManager.js";
 

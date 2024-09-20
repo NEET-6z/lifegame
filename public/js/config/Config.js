@@ -3,6 +3,6 @@ export class Config {
     this.resize = resize || false;
     this.editstate = editstate || false;
     this.mode = mode || "free";
-    this.name = name || "stage";
+    this.name = name || "";
   }
 }

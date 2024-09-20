@@ -1,3 +1,4 @@
+//状態を表す
 export class State {
   constructor(name, color, canSelect=true, defaultState = 0, transitionRules = []) {
     this.name = name;
@@ -12,6 +13,7 @@ export class State {
   }
 }
 
+//すべての状態を管理する
 export class StateManager {
   constructor() {
     this.states = {};
@@ -67,6 +69,7 @@ export class StateManager {
     this.states[this.nextStateId] = new State(
       `state${this.nextStateId - 10}`,
       "lime",
+      true,
       this.nextStateId,
       []
     );
@@ -100,7 +103,8 @@ export class StateManager {
         let ok = true;
         for (let c of rule.condition) {
           const cnt = neighbors.filter((e) => e.value === c.state).length;
-
+          
+          //正の数なら数値、負の数ならidが指す状態の個数
           let l = c.min;
           if (c.min < 0) {
             l = neighbors.filter((e) => e.value === -c.min).length;
@@ -120,3 +124,4 @@ export class StateManager {
     return id;
   }
 }
+

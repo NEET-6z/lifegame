@@ -1,3 +1,5 @@
+//アップデートしたときにばぐらないように
+
 class Type {
   static isNumber(value) {
     return typeof value === "number";
@@ -118,15 +120,14 @@ export class LSGameData extends LSHelper {
 
 export class LSStageProgress extends LSHelper {
   static name = "stageProgress";
-  static default = { a: 0, b: 0, c: 0, d: 0 };
+  static default = { a: 0, b: 0, c: 0};
 
-  checkType(data) {
+  static checkType(data) {
     return (
       Type.isObject(data) &&
       Type.isNumber(data.a) &&
       Type.isNumber(data.b) &&
-      Type.isNumber(data.c) &&
-      Type.isNumber(data.d)
+      Type.isNumber(data.c)
     );
   }
 }

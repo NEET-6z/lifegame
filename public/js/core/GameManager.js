@@ -1,9 +1,9 @@
 import { LSGameData, LSStageProgress } from "../common/LocalStorage.js";
 import { State } from "./StateManager.js";
 import { InputHandler } from "./ui/InputHandler.js";
-import { StateEditor } from "./ui/StateEditor.js";
+import { createStateEditor } from "./ui/StateEditor.js";
 
-export default class GameManager {
+export class GameManager {
   constructor(board, stateManager, gameEvaluator, config) {
     this.config = config;
     this.stateManager = stateManager;
@@ -34,8 +34,8 @@ export default class GameManager {
     }
     this.draw();
 
-    this.inputHandler = new InputHandler(this);
-    this.stateEditor = new StateEditor(this);
+    this.inputHandler = InputHandler(this);
+    this.stateeditor = createStateEditor(this);
 
     if (this.config.mode == "stage") {
       const data = LSGameData.get(this.config.name);

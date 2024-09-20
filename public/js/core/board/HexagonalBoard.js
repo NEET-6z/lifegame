@@ -103,9 +103,6 @@ export class HexagonalBoard extends Board {
     const rect = canvas.getBoundingClientRect();
     const ctx = canvas.getContext("2d");
 
-    const gridColor = "#555555";
-    const gridLineWidth = 2;
-
     canvas.width = rect.width;
     canvas.height = rect.height;
 
@@ -129,7 +126,7 @@ export class HexagonalBoard extends Board {
         const stateId = this.getCell(j, i);
         const state = stateManager.getState(stateId);
 
-        const gridcolor = this.isCellLocked(x, y) ? "red" : gridColor;
+        const gridcolor = this.isCellLocked(x, y) ? this.lockedgridColor : this.gridColor;
 
         drawRegularPolygon(
           ctx,
@@ -140,7 +137,7 @@ export class HexagonalBoard extends Board {
           30,
           gridcolor,
           state.color,
-          gridLineWidth
+          this.gridLineWidth
         );
       }
     }
