@@ -1,0 +1,48 @@
+{
+  "gameManager": { "speed": 200, "selectedStateId": 2 },
+  "board": {
+    "size": 10,
+    "cells": [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 2, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 2, 1, 1, 1, 1, 1, 1],
+      [1, 1, 2, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 2, 2, 2, 1, 1, 1, 1, 1],
+      [1, 1, 1, 2, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ]
+  },
+  "stateManager": {
+    "states": {
+      "0": {
+        "name": "Null",
+        "color": "#eee",
+        "canSelect": false,
+        "defaultState": 0,
+        "transitionRules": []
+      },
+      "1": {
+        "name": "Dead",
+        "color": "white",
+        "canSelect": true,
+        "defaultState": 1,
+        "transitionRules": [
+          { "condition": [{ "state": -2, "min": 3, "max": 3 }], "nextState": 2 }
+        ]
+      },
+      "2": {
+        "name": "Alive",
+        "color": "black",
+        "canSelect": true,
+        "defaultState": 1,
+        "transitionRules": [
+          { "condition": [{ "state": -2, "min": 2, "max": 3 }], "nextState": 2 }
+        ]
+      }
+    },
+    "nextStateId": 11
+  }
+}

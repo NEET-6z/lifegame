@@ -102,9 +102,15 @@ export class LSGameData extends LSHelper {
                 rule.condition,
                 (cond) =>
                   Type.isObject(cond) &&
-                  Type.isNumber(cond.state) &&
-                  Type.isNumber(cond.min) &&
-                  Type.isNumber(cond.max)
+                  Type.isObject(cond.target) &&
+                  Type.isObject(cond.min) &&
+                  Type.isObject(cond.max) &&
+                  Type.isString(cond.target.type) &&
+                  Type.isNumber(cond.target.value) &&
+                  Type.isString(cond.min.type) &&
+                  Type.isNumber(cond.min.value) &&
+                  Type.isString(cond.max.type) &&
+                  Type.isNumber(cond.max.value)
               ) &&
               Type.isNumber(rule.nextState)
           )

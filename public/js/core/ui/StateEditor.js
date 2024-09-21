@@ -185,8 +185,7 @@ export const createStateEditor = (gameManager) => {
 // Rule Editor functions
 const createRuleEditor = (gameManager, stateId) => {
   const state = gameManager.stateManager.getState(stateId);
-  const maxCount = gameManager.board.getNeighbors(0, 0).length;
-  let modalClone, modal, rulesContainer, addRuleBtn, saveBtn, defaultTransitionContainer;
+  let modalClone, modal, rulesContainer, addRuleBtn, saveBtn, defaultTransitionContainer, customParameterContainer;
 
   const open = () => {
     const modalTemplate = document.getElementById("ruleEditorModal");
@@ -207,8 +206,11 @@ const createRuleEditor = (gameManager, stateId) => {
     saveBtn = modalClone.querySelector(".saveRules");
     defaultTransitionContainer = modalClone.querySelector("#defaultTransitionContainer");
 
+    customParameterContainer = modalClone.querySelector("#customParameterContainer");
+
     initializeDefaultTransition();
     initializeTransitionRules();
+    initializeCustomParameter();
   };
 
   const initializeDefaultTransition = () => {
@@ -229,6 +231,14 @@ const createRuleEditor = (gameManager, stateId) => {
     });
   };
 
+  const initializeCustomParameter = () => {
+    const paramSlot = gameManager.stateManager.getParamSlot();
+
+    paramSlot.forEach((param) => {
+      customParameterContainer.appendChild(createParamElement(param));
+    });
+  }
+
   const attachEventListeners = () => {
     addRuleBtn.addEventListener("click", addNewRule);
     saveBtn.addEventListener("click", saveRules);
@@ -248,11 +258,19 @@ const createRuleEditor = (gameManager, stateId) => {
       state.defaultState = defaultTransition;
       state.transitionRules = rules;
 
+      Array.from(customParameterContainer.children).map(extractParamFromElement)
+
       closeModal();
     } else {
       alert("編集は現在無効です。");
     }
   };
+
+  const extractParamFromElement = (paramElement) => {
+    const id = paramElement.querySelector(".param-label").innerHTML;
+    const value = paramElement.querySelector(".param-value").value;
+    state.params[id-1] = Number(value);
+  }
 
   const extractRuleFromElement = (transitionRuleElement) => {
     const conditions = Array.from(transitionRuleElement.querySelectorAll(".condition")).map(extractConditionFromElement);
@@ -261,11 +279,29 @@ const createRuleEditor = (gameManager, stateId) => {
   };
 
   const extractConditionFromElement = (conditionElement) => {
-    const selects = conditionElement.querySelectorAll("select");
+    const typeSelects = conditionElement.querySelectorAll('.condition-type-select');
+    const stateSelects = conditionElement.querySelectorAll('.condition-state-select');
+    const valueInputs = conditionElement.querySelectorAll('.condition-value-input');
+    const paramInputs = conditionElement.querySelectorAll('.condition-param-select');
+
+
+    const getValue = (index) => {
+      const type = typeSelects[index].value;
+      if (type === 'number') {
+        return {type:type, value: parseInt(valueInputs[index].value)};
+      } 
+      if(type === 'state') {
+        return {type:type, value: parseInt(stateSelects[index].value)};
+      }
+      if(type === 'param'){
+        return {type:type, value: parseInt(paramInputs[index].value)};
+      }
+    };
+
     return {
-      state: parseInt(selects[1].value),
-      min: parseInt(selects[0].value),
-      max: parseInt(selects[2].value),
+      min: getValue(0),
+      target: getValue(1),
+      max: getValue(2),
     };
   };
 
@@ -284,7 +320,7 @@ const createRuleEditor = (gameManager, stateId) => {
 
     addConditionButton.addEventListener("click", () => {
       if (gameManager.config.editstate) {
-        conditionsContainer.appendChild(createConditionElement({ state: "", min: 0, max: 0 }));
+        conditionsContainer.appendChild(createConditionElement({ target: "", min: 0, max: 0 }));
       }
     });
 
@@ -300,6 +336,19 @@ const createRuleEditor = (gameManager, stateId) => {
 
     return el;
   };
+
+  const createParamElement = (p) => {
+    const value = (state.params[p-1]) ? state.params[p-1] : 0;
+    
+    const el = document.createElement("div");
+    el.className = ""
+
+    el.innerHTML = `
+      <label class="form-label param-label mb-0" for="param-${p}" style="font-size: 0.9em;">${p}</label>
+      <input type="number" class="form-control form-control-sm param-value" value="${value}" ${gameManager.config.editstate ? "" : "disabled"} style="width: 60px; padding: 2px 4px;">
+    `;
+    return el;
+  }
 
   const getTransitionRuleHTML = (rule) => {
     return `
@@ -323,9 +372,36 @@ const createRuleEditor = (gameManager, stateId) => {
     `;
   };
 
+  const attachConditionEventListeners = (conditionElement) => {
+    const typeSelects = conditionElement.querySelectorAll('.condition-type-select');
+    const stateSelects = conditionElement.querySelectorAll('.condition-state-select');
+    const valueInputs = conditionElement.querySelectorAll('.condition-value-input');
+    const paramInputs = conditionElement.querySelectorAll('.condition-param-select');
+
+    typeSelects.forEach((select, index) => {
+      select.addEventListener('change', (e) => {
+        if (e.target.value === 'number') {
+          stateSelects[index].style.display = 'none';
+          valueInputs[index].style.display = 'inline-block';
+          paramInputs[index].style.display = 'none';
+        } 
+        if(e.target.value === 'state') {
+          stateSelects[index].style.display = 'inline-block';
+          valueInputs[index].style.display = 'none';
+          paramInputs[index].style.display = 'none';
+        }
+        if(e.target.value === 'param'){
+          stateSelects[index].style.display = 'none';
+          valueInputs[index].style.display = 'none';
+          paramInputs[index].style.display = 'inline-block';
+        }
+      });
+    });
+  };
+
   const createConditionElement = (condition) => {
     const el = document.createElement("div");
-    el.className = "condition border p-2 mb-3";
+    el.className = "condition border p-2 mb-2";
     el.innerHTML = getConditionHTML(condition);
 
     el.querySelector(".delete-condition").addEventListener("click", () => {
@@ -334,54 +410,56 @@ const createRuleEditor = (gameManager, stateId) => {
       }
     });
 
+    attachConditionEventListeners(el);
+
     return el;
   };
-
+  
   const getConditionHTML = (condition) => {
     const allStates = gameManager.stateManager.getAllState();
-    const stateOptions = allStates.map((st) =>
-      `<option value="${st.id}" ${condition.state === st.id ? "selected" : ""}>${st.name}</option>`
-    ).join("");
 
-    return `
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="w-75">
-          <div class="d-flex align-items-center">
-            <div>
-              <select class="form-select" ${gameManager.config.editstate ? "" : "disabled"}>
-                ${[...Array(maxCount + 1).keys()].map((num) =>
-                  `<option value="${num}" ${condition.min === num ? "selected" : ""}>${num}</option>`
-                ).join("")}
-                ${allStates.map((st) =>
-                  `<option value="${-st.id}" ${condition.min == -st.id ? "selected" : ""}>${st.name}の個数</option>`
-                ).join("")}
-              </select>
-            </div>
-            <span class="p-2"><=</span>
-            <div>
-              <select class="form-select" ${gameManager.config.editstate ? "" : "disabled"}>
-                ${stateOptions}
-              </select>
-            </div>
-            <span class="p-2"><=</span>
-            <div>
-              <select class="form-select" ${gameManager.config.editstate ? "" : "disabled"}>
-                ${[...Array(maxCount + 1).keys()].map((num) =>
-                  `<option value="${num}" ${condition.max === num ? "selected" : ""}>${num}</option>`
-                ).join("")}
-                ${allStates.map((st) =>
-                  `<option value="${-st.id}" ${condition.max == -st.id ? "selected" : ""}>${st.name}の個数</option>`
-                ).join("")}
-              </select>
-            </div>
-          </div>
-        </div>
-        <button class="btn btn-danger btn-sm delete-condition" ${gameManager.config.editstate ? "" : "disabled"}>削除</button>
+    const createSelectWithInput = (item) => `
+      <div class="d-flex align-items-center condition-input" style="flex: 1; min-width: 150px;">
+        <select class="form-select form-select-sm condition-type-select" ${gameManager.config.editstate ? "" : "disabled"}>
+          <option value="number" ${item.type == "number" ? 'selected' : ''}>数値</option>
+          <option value="state" ${item.type == "state" ? 'selected' : ''}>状態</option>
+          <option value="param" ${item.type == "param" ? 'selected' : ''}>パラメータ</option>
+        </select>
+        <select class="form-select form-select-sm condition-state-select ml-1" style="${item.type == 'state' ? '' : 'display:none;'}" ${gameManager.config.editstate ? "" : "disabled"}>
+          ${allStates.map((st) =>
+              `<option value="${st.id}" ${st.id === item.value ? 'selected' : ''}>${st.name}</option>`
+          ).join("")}
+        </select>
+        
+        <input type="number" class="form-control form-control-sm condition-value-input ml-1" style="${item.type == 'number' ? '' : 'display:none;'}" value="${item.value}" ${gameManager.config.editstate ? "" : "disabled"}>
+
+        <select class="form-select form-select-sm condition-param-select ml-1" style="${item.type == 'param' ? '' : 'display:none;'}" ${gameManager.config.editstate ? "" : "disabled"}>
+          ${[1,2,3,4,5].map((p) =>
+              `<option value="${p-1}" ${p-1 === item.value ? 'selected' : ''}>${p}</option>`
+          ).join("")}
+        </select>
       </div>
     `;
-  };
+    
+    return `
+      <div class="d-flex flex-wrap justify-content-between align-items-center" style="max-width: 600px; width: 100%;">
+        <div class="d-flex align-items-center" style="flex: 1;">
+          ${createSelectWithInput(condition.min)}
+          <span class="px-1"><=</span>
+          ${createSelectWithInput(condition.target)}
+          <span class="px-1"><=</span>
+          ${createSelectWithInput(condition.max)}
+        </div>
+        <div style="margin: 0px 10px;">
+          <button class="btn btn-danger btn-sm delete-condition ml-2" ${gameManager.config.editstate ? "" : "disabled"}>削除</button>
+        </div>
+      </div>
+    `;
+};
 
   return {
     open
   };
 };
+
+//vanillaのjsでdomを500行、何の罰ゲームですか？

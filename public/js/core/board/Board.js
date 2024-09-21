@@ -115,7 +115,9 @@ export default class Board {
       const newX = x + dx;
       const newY = y + dy;
 
-      neighbors.push({ y: newY, x: newX, value: this.getCell(newX, newY) });
+      if(this.isValidCoordinate(newX,newY)){ 
+        neighbors.push({ y: newY, x: newX, value: this.getCell(newX, newY) });
+      }
     }
 
     return neighbors;
