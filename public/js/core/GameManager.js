@@ -1,7 +1,7 @@
 import { LSGameData, LSStageProgress } from "../common/LocalStorage.js";
-import { State } from "./StateManager.js";
 import { InputHandler } from "./ui/InputHandler.js";
 import { createStateEditor } from "./ui/StateEditor.js";
+import { TemplateRuleModal } from "./ui/TemplateRuleModal.js";
 
 export class GameManager {
   constructor(board, stateManager, gameEvaluator, config) {
@@ -33,9 +33,11 @@ export class GameManager {
       );
     }
     this.draw();
+    
 
     this.inputHandler = InputHandler(this);
-    this.stateeditor = createStateEditor(this);
+    this.stateEditor = createStateEditor(this);
+    this.templateRuleModal = TemplateRuleModal(this);
 
     if (this.config.mode == "stage") {
       const data = LSGameData.get(this.config.name);
@@ -174,6 +176,8 @@ export class GameManager {
         nextStateId: this.stateManager.nextStateId,
       },
     };
+
+
     LSGameData.set(data, this.config.name);
     console.log("All data saved to localStorage");
   }
@@ -191,16 +195,6 @@ export class GameManager {
       this.board.cells = JSON.parse(JSON.stringify(data.board.cells));
       
       this.stateManager.states = data.stateManager.states;
-      for (const id in this.stateManager.states) {
-        const stateData = this.stateManager.states[id];
-        this.stateManager.states[id] = new State(
-          stateData.name,
-          stateData.color,
-          stateData.canSelect,
-          stateData.defaultState,
-          stateData.transitionRules
-        );
-      }
       this.stateManager.nextStateId = data.stateManager.nextStateId;
     }
   }

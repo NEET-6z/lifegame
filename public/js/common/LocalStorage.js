@@ -52,8 +52,8 @@ class LSHelper {
     }
   }
 
-  static remove(param){
-    localStorage.removeItem(this.getKeyName(param))
+  static remove(param) {
+    localStorage.removeItem(this.getKeyName(param));
   }
 
   static getKeyName(param) {
@@ -89,11 +89,11 @@ export class LSGameData extends LSHelper {
       Object.values(data.stateManager.states).every(
         (state) =>
           Type.isObject(state) &&
+          Type.isNumber(state.id) &&
           Type.isString(state.name) &&
           Type.isString(state.color) &&
           Type.isBoolean(state.canSelect) &&
-          (Type.isNumber(state.defaultState) ||
-            Type.isArray(state.defaultState, Type.isNumber)) &&
+          Type.isNumber(state.defaultState) &&
           Type.isArray(
             state.transitionRules,
             (rule) =>
@@ -112,8 +112,10 @@ export class LSGameData extends LSHelper {
                   Type.isString(cond.max.type) &&
                   Type.isNumber(cond.max.value)
               ) &&
+              Type.isString(rule.operation) &&
               Type.isNumber(rule.nextState)
-          )
+          ) &&
+          Type.isArray(state.params, Type.isNumber)
       ) &&
       Type.isNumber(data.stateManager.nextStateId)
     );
@@ -126,7 +128,7 @@ export class LSGameData extends LSHelper {
 
 export class LSStageProgress extends LSHelper {
   static name = "stageProgress";
-  static default = { a: 0, b: 0, c: 0};
+  static default = { a: 0, b: 0, c: 0 };
 
   static checkType(data) {
     return (
@@ -137,4 +139,3 @@ export class LSStageProgress extends LSHelper {
     );
   }
 }
-

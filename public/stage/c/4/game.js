@@ -47,33 +47,51 @@ const gameEvaluator = new StageC4Evaluator();
 const stateManager = new StateManager();
 
 stateManager.setState(
-  2,
-  new State("Alive", "black", true, 3, [
+  new State(2, "Alive", "black", true, 3, [
     {
       condition: [
         {
-          state: 2,
-          min: 2,
-          max: 3,
+          target: {
+            type: 'state',
+            value: 2,
+          },
+          min: {
+            type: "number",
+            value: 2,
+          },
+          max: {
+            type: "number",
+            value:3,
+          }
         },
       ],
       nextState: 2,
+      operation: 'and',
     },
   ])
 )
 
 stateManager.setState(
-  3,
-  new State("死骸", "#ccc", false, 3, [
+  new State(3, "死骸", "#ccc", false, 3, [
     {
       condition: [
         {
-          state: 2,
-          min: 3,
-          max: 3,
+          target: {
+            type: 'state',
+            value: 2,
+          },
+          min: {
+            type: "number",
+            value: 3,
+          },
+          max: {
+            type: "number",
+            value:3,
+          }
         },
       ],
       nextState: 2,
+      operation: 'and',
     },
   ])
 )

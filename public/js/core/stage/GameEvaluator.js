@@ -1,3 +1,7 @@
+//complete 0:評価中 1:条件を満たした -1:条件に反した -2:初期条件に反した
+//setCustomInfoとevaluateTurnをオーバーライドして判定ルールを書き換える
+
+
 export class GameEvaluator{
 
 	constructor(){
@@ -32,7 +36,6 @@ export class GameEvaluator{
   }
 	start(){
 		this.setCustomInfo();
-			
 	}
 	
 	stop(){

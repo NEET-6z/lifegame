@@ -1,12 +1,21 @@
 //状態を表す
 export class State {
-  constructor(name, color, canSelect=true, defaultState = 0, transitionRules = [], params = [0,0,0,0,0]) {
+  constructor(
+    id,
+    name,
+    color,
+    canSelect = true,
+    defaultState = 0,
+    transitionRules = [],
+    params = [0, 0, 0, 0, 0]
+  ) {
+
+    this.id = id;
     this.name = name;
     this.color = color;
     this.canSelect = canSelect;
     this.defaultState = defaultState;
     this.transitionRules = transitionRules;
-
     this.params = params;
   }
 
@@ -20,18 +29,17 @@ export class StateManager {
   constructor() {
     this.states = {};
     this.nextStateId = 11;
-    
-    this.paramSlot = [1,2,3,4,5];
-    
+
+    this.paramSlot = [1, 2, 3, 4, 5];
+
     this.initializeStates();
   }
 
   initializeStates() {
-    this.setState(0, new State("Null", "#eee", false, 0, []));
-    
+    this.setState(new State(0, "Null", "#eee", false, 0, []));
+
     this.setState(
-      1,
-      new State("Dead", "white", true, 1,  [
+      new State(1, "Dead", "white", true, 1, [
         {
           condition: [
             {
@@ -46,17 +54,16 @@ export class StateManager {
               max: {
                 type: "number",
                 value: 3,
-              }
+              },
             },
           ],
+          operator: 'and',
           nextState: 2,
         },
-      ],
-      )
+      ])
     );
     this.setState(
-      2,
-      new State("Alive", "black", true, 1, [
+      new State(2, "Alive", "black", true, 1, [
         {
           condition: [
             {
@@ -71,16 +78,18 @@ export class StateManager {
               max: {
                 type: "number",
                 value: 3,
-              }
+              },
             },
           ],
+          operator: 'and',
           nextState: 2,
         },
       ])
     );
   }
 
-  setState(id, state) {
+  setState(state) {
+    const id = state.id;
     if (0 <= id && id <= 10) {
       this.states[id] = state;
       return true;
@@ -90,6 +99,7 @@ export class StateManager {
 
   addState() {
     this.states[this.nextStateId] = new State(
+      this.nextStateId,
       `state${this.nextStateId - 10}`,
       "lime",
       true,
@@ -119,7 +129,7 @@ export class StateManager {
       });
   }
 
-  getParamSlot(){
+  getParamSlot() {
     return this.paramSlot;
   }
 
@@ -127,33 +137,60 @@ export class StateManager {
     const state = this.getState(id);
     if (state) {
       for (let rule of state.transitionRules) {
-        let ok = true;
-        for (let c of rule.condition) {
-          let target = this.ruleTypeMatching(c.target,neighbors);
-          let min = this.ruleTypeMatching(c.min,neighbors);
-          let max = this.ruleTypeMatching(c.max,neighbors);
-
-          if (!(min <= target && target <= max)) {
-            ok = false;
+        if(rule.operator=='and'){
+          
+          let ok = true;
+          for (let c of rule.condition) {
+            let target = this.ruleTypeMatching(c.target, neighbors);
+            let min = this.ruleTypeMatching(c.min, neighbors);
+            let max = this.ruleTypeMatching(c.max, neighbors);
+            
+            if (!(min <= target && target <= max)) {
+              ok = false;
+            }
           }
+          if (ok) return rule.nextState;
         }
-        if (ok) return rule.nextState;
+        
+        if(rule.operator=='or'){
+          let ok = false;
+          for (let c of rule.condition) {
+            let target = this.ruleTypeMatching(c.target, neighbors);
+            let min = this.ruleTypeMatching(c.min, neighbors);
+            let max = this.ruleTypeMatching(c.max, neighbors);
+            
+            if ((min <= target && target <= max)) {
+              ok = true;
+              break;
+            }
+          }
+          if (ok) return rule.nextState;
+        }
       }
       return state.defaultState;
     }
     return id;
   }
 
-  ruleTypeMatching(item, neighbors){
-    if(item.type=='state'){
-      return neighbors.filter((e) => e.value===item.value).length;
+  ruleTypeMatching(item, neighbors) {
+    if (item.type == "state") {
+      return neighbors.filter((e) => e.value === item.value).length;
     }
-    if(item.type=='number'){
+    if (item.type == "number") {
       return item.value;
     }
-    if(item.type=='param'){
-      return neighbors.reduce((sum, e) => sum+this.getState(e.value).params[item.value], 0)
+    if (item.type == "param") {
+      return neighbors.reduce(
+        (sum, e) => sum + this.getState(e.value).params[item.value],
+        0
+      );
     }
+  }
+
+  setTemplate(tp){
+    tp.forEach((s) => {
+      this.setState(s);
+    });
   }
 }
 

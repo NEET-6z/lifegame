@@ -1,3 +1,5 @@
+//ゲームを操作するイベント
+
 export function InputHandler(gameManager) {
   const canvas = gameManager.canvas;
   const config = gameManager.config;
@@ -128,12 +130,8 @@ export function InputHandler(gameManager) {
     }
   }
 
-  // Initialize events
   initCanvasEvent();
   initControlEvent();
   document.addEventListener("keydown", handleKeyPress);
   window.addEventListener('resize', () => gameManager.draw());
 }
-
-// Usage
-// setupInputHandlers(gameManager);
