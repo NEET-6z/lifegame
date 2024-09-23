@@ -4,6 +4,7 @@ import { GameManager } from "../../../js/core/GameManager.js";
 import { GameEvaluator } from "../../../js/core/stage/GameEvaluator.js";
 import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
 import { StateManager } from "../../../js/core/StateManager.js";
+import { Life } from "../../../js/data/rule.js";
 
 checkStageAccess();
 
@@ -83,7 +84,7 @@ const lockedCells = [
 
 
 const board = new RectangularBoard(15,defaultCells,lockedCells);
-const stateManager = new StateManager();
+const stateManager = new StateManager(Life);
 const gameEvaluator = new StageC1Evaluator();
 
 const gameManager = new GameManager(board, stateManager, gameEvaluator, config);

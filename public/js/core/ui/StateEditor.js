@@ -48,6 +48,8 @@ export const createStateEditor = (gameManager) => {
 
   const attachEventListeners = () => {
     stateListContainer.addEventListener("click", handleStateListClick);
+
+    
     if (gameManager.config.editstate) {
       addStateButton.addEventListener("click", addState);
     }
@@ -117,7 +119,7 @@ export const createStateEditor = (gameManager) => {
   };
 
   const createStateInfo = (state) => {
-    const stateInfo = document.createElement("div");
+    const stateInfo = document.createElement("button");
     stateInfo.className = `d-flex align-items-center p-2 ${
       state.canSelect ? "border" : ""
     } ${
@@ -125,6 +127,7 @@ export const createStateEditor = (gameManager) => {
         ? "border-primary border-4"
         : "border-secondary"
     } rounded`;
+    stateInfo.style = "min-width:100px;min-height:40px"
     stateInfo.innerHTML = `
       <span class="state-color me-2" style="display:inline-block;width:25px;height:25px;background-color:${state.color};border-radius:50%;"></span>
       <strong>${state.name}</strong>
@@ -462,10 +465,6 @@ const createRuleEditor = (gameManager, stateId) => {
      <div class="d-flex justify-content-between align-items-center mb-3">
      <div class="d-flex">
       <h3 style="margin:0px 10px;">ルール</h3>
-      <select class="operator-select form-control me-2" id="operator-select" style="width: auto; max-width: 100px;">
-      <option value="and">and</option>
-      <option value="or">or</option>
-      </select>
      </div>
       <button class="btn btn-danger btn-sm delete-transition-rule" ${gameManager.config.editstate ? "" : "disabled"}>
         このルールを削除
@@ -477,7 +476,13 @@ const createRuleEditor = (gameManager, stateId) => {
         gameManager.config.editstate ? "" : "disabled"
       }>条件を追加</button>
       <div class="mt-3 d-flex align-items-center">
-        <label>すべての条件を満たすとき</label>
+        <span>
+          <select class="operator-select form-control me-2" id="operator-select" style="width: auto; display:inline;">
+            <option value="and">すべての条件</option>
+            <option value="or">1つ以上の条件</option>
+          </select>  
+          を満たすとき
+        </span>
         <div>
           <select class="form-select transition-target" ${
             gameManager.config.editstate ? "" : "disabled"
@@ -562,10 +567,10 @@ const createRuleEditor = (gameManager, stateId) => {
           }>数値</option>
           <option value="state" ${
             item.type == "state" ? "selected" : ""
-          }>状態</option>
+          }>状態の個数</option>
           <option value="param" ${
             item.type == "param" ? "selected" : ""
-          }>パラメータ</option>
+          }>パラメータの総和</option>
         </select>
         <select class="form-select form-select-sm condition-state-select ml-1" style="${
           item.type == "state" ? "" : "display:none;"

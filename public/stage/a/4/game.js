@@ -4,6 +4,7 @@ import { GameManager } from "../../../js/core/GameManager.js";
 import { GameEvaluator } from "../../../js/core/stage/GameEvaluator.js";
 import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
 import { StateManager } from "../../../js/core/StateManager.js";
+import { Life } from "../../../js/data/rule.js";
 
 checkStageAccess();
 
@@ -43,7 +44,7 @@ class StageA3Evaluator extends GameEvaluator{
 
 
 const board = new RectangularBoard();
-const stateManager = new StateManager();
+const stateManager = new StateManager(Life);
 const gameEvaluator = new StageA3Evaluator();
 
 const gameManager = new GameManager(board, stateManager, gameEvaluator, config);

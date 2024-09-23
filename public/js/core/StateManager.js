@@ -1,3 +1,4 @@
+
 //状態を表す
 export class State {
   constructor(
@@ -26,66 +27,23 @@ export class State {
 
 //すべての状態を管理する
 export class StateManager {
-  constructor() {
+  constructor(template) {
     this.states = {};
     this.nextStateId = 11;
 
     this.paramSlot = [1, 2, 3, 4, 5];
-
     this.initializeStates();
+
+
+    if(template){
+      this.setTemplate(template);
+    }
+    
   }
 
   initializeStates() {
+    this.states = {};
     this.setState(new State(0, "Null", "#eee", false, 0, []));
-
-    this.setState(
-      new State(1, "Dead", "white", true, 1, [
-        {
-          condition: [
-            {
-              target: {
-                type: "state",
-                value: 2,
-              },
-              min: {
-                type: "number",
-                value: 3,
-              },
-              max: {
-                type: "number",
-                value: 3,
-              },
-            },
-          ],
-          operator: 'and',
-          nextState: 2,
-        },
-      ])
-    );
-    this.setState(
-      new State(2, "Alive", "black", true, 1, [
-        {
-          condition: [
-            {
-              target: {
-                type: "state",
-                value: 2,
-              },
-              min: {
-                type: "number",
-                value: 2,
-              },
-              max: {
-                type: "number",
-                value: 3,
-              },
-            },
-          ],
-          operator: 'and',
-          nextState: 2,
-        },
-      ])
-    );
   }
 
   setState(state) {
@@ -125,7 +83,7 @@ export class StateManager {
     return Object.entries(this.states)
       .filter(([id]) => Number(id) !== 0)
       .map(([id, state]) => {
-        return { id: Number(id), ...state };
+        return { ...state };
       });
   }
 
@@ -188,6 +146,7 @@ export class StateManager {
   }
 
   setTemplate(tp){
+    this.initializeStates();
     tp.forEach((s) => {
       this.setState(s);
     });

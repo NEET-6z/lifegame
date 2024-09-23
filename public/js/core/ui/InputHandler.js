@@ -118,10 +118,10 @@ export function InputHandler(gameManager) {
         gameManager.undo();
         break;
       case "x":
-        const stateCount = gameManager.stateManager.getAllState().length;
-        let next = (gameManager.selectedStateId + 1) % stateCount;
-        if (next == 0) next = stateCount;
-        gameManager.selectedStateId = next;
+        const allState = gameManager.stateManager.getAllState();
+        const stateCount = allState.length;
+        let nextidx = (allState.findIndex(item => item.id === gameManager.selectedStateId) + 1) % stateCount;
+        gameManager.selectedStateId = allState[nextidx].id;
         gameManager.stateEditor.updateStateList();
         break;
       case "c":

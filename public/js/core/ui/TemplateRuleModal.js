@@ -35,6 +35,8 @@ export const TemplateRuleModal = (gameManager) => {
     if (selectedTemplate) {
       document.getElementById('template-display').innerText = selectedTemplate.title;
       gameManager.stateManager.setTemplate(selectedTemplate.rule);
+
+      gameManager.stateEditor.updateStateList();
     }
   };
 

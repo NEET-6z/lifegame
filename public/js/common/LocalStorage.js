@@ -112,7 +112,7 @@ export class LSGameData extends LSHelper {
                   Type.isString(cond.max.type) &&
                   Type.isNumber(cond.max.value)
               ) &&
-              Type.isString(rule.operation) &&
+              Type.isString(rule.operator) &&
               Type.isNumber(rule.nextState)
           ) &&
           Type.isArray(state.params, Type.isNumber)

@@ -1,7 +1,6 @@
 import { State } from '../core/StateManager.js';
 
-// templates.js
-export const Life = bsToMultiRange("2", "23");
+export const Life = bsToMultiRange("3", "23");
 export const Antilife = bsToMultiRange("0123478", "34678");
 export const Oils = bsToMultiRange("014", "2");
 export const Invertamaze = bsToMultiRange("028", "0124");
