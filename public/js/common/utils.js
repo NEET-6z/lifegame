@@ -1,3 +1,9 @@
+export function Array2(rows, cols, initialValue = null) {
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => initialValue)
+  );
+}
+
 
 export function drawRegularPolygon(
   ctx,

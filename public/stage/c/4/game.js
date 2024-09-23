@@ -47,6 +47,31 @@ const gameEvaluator = new StageC4Evaluator();
 const stateManager = new StateManager();
 
 stateManager.setState(
+  new State(1, "Dead", "white", true, 1, [
+    {
+      condition: [
+        {
+          target: {
+            type: 'state',
+            value: 2,
+          },
+          min: {
+            type: "number",
+            value: 3,
+          },
+          max: {
+            type: "number",
+            value:3,
+          }
+        },
+      ],
+      nextState: 2,
+      operator: 'or',
+    },
+  ])
+)
+
+stateManager.setState(
   new State(2, "Alive", "black", true, 3, [
     {
       condition: [
@@ -66,7 +91,7 @@ stateManager.setState(
         },
       ],
       nextState: 2,
-      operation: 'and',
+      operator: 'or',
     },
   ])
 )
@@ -91,7 +116,7 @@ stateManager.setState(
         },
       ],
       nextState: 2,
-      operation: 'and',
+      operator: 'or',
     },
   ])
 )

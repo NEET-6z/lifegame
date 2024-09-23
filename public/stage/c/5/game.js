@@ -12,8 +12,10 @@ const config = new Config({
   resize: false,
   editstate: false,
   mode: "stage",
-  name: "a2",
+  name: "c5",
 });
+
+
 
 const board = new RectangularBoard();
 const stateManager = new StateManager(Life);
