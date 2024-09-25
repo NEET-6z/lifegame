@@ -33,13 +33,14 @@ export const Maze_with_Mice = bsToMultiRange("37", "12345");
 export const DryLife = bsToMultiRange("37", "23");
 export const Vote = bsToMultiRange("5678", "45678");
 
+
 export const templates = [
-  { title: 'Life', description: '通常のライフ', rule: Life },
+  { title: 'Life', description: '', rule: Life },
   { title: 'Antilife', description: '反ライフ', rule: Antilife },
   { title: 'Oils', description: 'オイル', rule: Oils },
   { title: 'Invertamaze', description: 'インバート迷路', rule: Invertamaze },
   { title: 'Neon Blobs', description: 'ネオンブロブ', rule: Neon_Blobs },
-  { title: 'H Trees', description: 'Hの木', rule: H_trees },
+  { title: 'H Trees', description: 'Hな木', rule: H_trees },
   { title: 'FUZZ', description: 'ファズ', rule: FUZZ },
   { title: 'GNARL', description: 'グナル', rule: GNARL },
   { title: 'Replicator', description: 'レプリケーター', rule: Replicator },

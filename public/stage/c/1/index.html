@@ -77,30 +77,50 @@
               <button id="random" class="btn btn-success">randomに生成する</button>
             </div>
             <div id="editRuleButtonsContainer"></div>
-            <div class="" hidden>
-              <button id="state-addon" class="btn btn-warning">状態を追加する</button>
-              
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#templateModal">
-                テンプレートを選択
-              </button>
-              <span id="template-display" class="mt-3"></span>
+            <div hidden>
+              <div class="d-flex justify-content-between" >
+                <div>
+                  <button id="state-addon" class="btn btn-warning">状態を追加する</button>
+                  
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#templateModal">
+                    テンプレートを選択
+                  </button>
+                  <span id="template-display" class="mt-3"></span>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-success" id="add-template-button">テンプレートを追加</button>
+                </div>
+              </div>  
             </div>
           </div>
         </div>
         
-        <!-- テンプレート選択モーダル -->
         <div class="modal fade" id="templateModal" tabindex="-1" aria-labelledby="templateModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
+          <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="templateModalLabel">テンプレートを選択してください</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
               </div>
               <div class="modal-body row">
-                <div class="col-6" style="border-right: 1px solid #ddd; max-height: 400px; overflow-y: auto; direction: rtl; text-align: left;">
-                  <ul class="list-group" id="template-list"></ul>
+                <div class="col-6" style="border-right: 1px solid #ddd; max-height: 400px; overflow-y: auto; text-align: left;">
+                  <ul class="nav nav-tabs mb-3" id="templateTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="default-tab" data-bs-toggle="tab" data-bs-target="#default-panel" type="button" role="tab" aria-controls="default-panel" aria-selected="true">デフォルト</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="user-tab" data-bs-toggle="tab" data-bs-target="#user-panel" type="button" role="tab" aria-controls="user-panel" aria-selected="false">ユーザー定義</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="templateTabContent">
+                    <div class="tab-pane fade show active" id="default-panel" role="tabpanel" aria-labelledby="default-tab">
+                      <ul class="list-group" id="default-template-list"></ul>
+                    </div>
+                    <div class="tab-pane fade" id="user-panel" role="tabpanel" aria-labelledby="user-tab">
+                      <ul class="list-group" id="user-template-list"></ul>
+                    </div>
+                  </div>
                 </div>
-
                 <div class="col-6" id="template-detail" style="min-height: 400px;">
                   <p class="text-muted">ここに説明が表示されます。</p>
                 </div>
@@ -112,6 +132,64 @@
             </div>
           </div>
         </div>
+
+       
+
+        <div class="modal fade" id="addTemplateModal" tabindex="-1" aria-labelledby="addTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addTemplateModalLabel">テンプレートを追加</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="addTemplateForm">
+                    <div class="mb-3">
+                      <label for="addTemplateTitle" class="form-label">タイトル</label>
+                      <input type="text" class="form-control" id="addTemplateTitle" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="addTemplateDescription" class="form-label">説明</label>
+                      <textarea class="form-control" id="addTemplateDescription" rows="3" required></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                  <button type="button" class="btn btn-primary" id="saveAddTemplateButton">保存</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="editTemplateModal" tabindex="-1" aria-labelledby="editTemplateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editTemplateModalLabel">テンプレートを編集</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="editTemplateForm">
+                    <div class="mb-3">
+                      <label for="editTemplateTitle" class="form-label">タイトル</label>
+                      <input type="text" class="form-control" id="editTemplateTitle" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="editTemplateDescription" class="form-label">説明</label>
+                      <textarea class="form-control" id="editTemplateDescription" rows="3" required></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                  <button type="button" class="btn btn-primary" id="saveEditTemplateButton">保存</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 
         <div id="ruleEditorModal" class="modal fade" tabindex="-1" aria-labelledby="ruleEditorModalLabel"
           aria-hidden="true">

@@ -42,17 +42,14 @@ export class StateManager {
   }
 
   initializeStates() {
+    this.nextStateId = 11;
     this.states = {};
     this.setState(new State(0, "Null", "#eee", false, 0, []));
   }
 
   setState(state) {
     const id = state.id;
-    if (0 <= id && id <= 10) {
-      this.states[id] = state;
-      return true;
-    }
-    return false;
+    this.states[id] = state;
   }
 
   addState() {
