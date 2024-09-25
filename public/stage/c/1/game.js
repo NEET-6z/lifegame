@@ -99,7 +99,7 @@ const Alive = new State(2, "Alive","black",true,1,[
   {
     "condition": [
       {
-        "min": { "type": "number", "value": 5 },
+        "min": { "type": "number", "value": 4 },
         "target": { "type": "state", "value": 3 },
         "max": { "type": "number", "value": 8 }
       }

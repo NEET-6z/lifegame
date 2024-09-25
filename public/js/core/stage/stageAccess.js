@@ -33,19 +33,6 @@ export function checkStageAccess() {
     throw new Error("このステージは未開放です。処理を中断します。");
   }
   
-  if (
-    path.length == 4 &&
-    path[3] == "tips.html" &&
-    progress[path[1]] + 1 <= stageNum
-  ) {
-    document.getElementById("page").innerHTML = `
-        <div class="container mt-5 text-center">
-          <h1>このページにはアクセスできません。</h1>
-          <a href="/stage/" class="btn btn-primary mt-3">ステージページに戻る</a>
-        </div>
-      `;
-    throw new Error("このページにはアクセスできません。処理を中断します。");
-  }
 
   const pageElement = document.getElementById("gameui");
   if (pageElement) {

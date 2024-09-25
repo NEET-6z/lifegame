@@ -26,12 +26,12 @@ class StageA3Evaluator extends GameEvaluator{
   
     this.history = new Array(1000000).fill(-1);
     this.queue = new Queue();
-    const hash = this.hash(this.gameManager.board.cells);
+    const hash = this.hash();
     this.history[hash] = 0;
     this.queue.push(hash);
   }
 
-  hash(cells){
+  hash(){
     let base = this.gameManager.stateManager.getAllState().length;
     let mod = 1000000;
     let ch = 0;

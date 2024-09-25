@@ -1,12 +1,10 @@
 import { State } from '../core/StateManager.js';
 
 export const Life = bsToMultiRange("3", "23");
-export const Antilife = bsToMultiRange("0123478", "34678");
+export const Antilife = bsToMultiRange("0123478", "01234678");
 export const Oils = bsToMultiRange("014", "2");
 export const Invertamaze = bsToMultiRange("028", "0124");
-export const Neon_Blobs = bsToMultiRange("08", "4");
 export const H_trees = bsToMultiRange("1", "012345678");
-export const FUZZ = bsToMultiRange("1", "014567");
 export const GNARL = bsToMultiRange("1", "1");
 export const Replicator = bsToMultiRange("1357", "1357");
 export const Fredkin = bsToMultiRange("1357", "02468");
@@ -35,44 +33,41 @@ export const Vote = bsToMultiRange("5678", "45678");
 
 
 export const templates = [
-  { title: 'Life', description: '', rule: Life },
-  { title: 'Antilife', description: '反ライフ', rule: Antilife },
+  { title: 'Life', description: '通常のライフゲームです', rule: Life },
+  { title: 'Antilife', description: '', rule: Antilife },
   { title: 'Oils', description: 'オイル', rule: Oils },
-  { title: 'Invertamaze', description: 'インバート迷路', rule: Invertamaze },
-  { title: 'Neon Blobs', description: 'ネオンブロブ', rule: Neon_Blobs },
-  { title: 'H Trees', description: 'Hな木', rule: H_trees },
-  { title: 'FUZZ', description: 'ファズ', rule: FUZZ },
+  { title: 'Invertamaze', description: '世代ごとに反転する迷路を作成する', rule: Invertamaze },
+  { title: 'H Trees', description: 'Hな形になる', rule: H_trees },
   { title: 'GNARL', description: 'グナル', rule: GNARL },
-  { title: 'Replicator', description: 'レプリケーター', rule: Replicator },
-  { title: 'Fredkin', description: 'フレドキン', rule: Fredkin },
-  { title: 'Seeds', description: 'シード', rule: Seeds },
-  { title: 'Live Free or Die', description: '自由に生きる', rule: Live_Free_or_Die },
-  { title: 'Serviettes', description: 'サーヴィエット', rule: Serviettes },
-  { title: 'Iceballs', description: 'アイスボール', rule: Iceballs },
-  { title: 'Life without Death', description: '死なないライフ', rule: Life_without_death },
-  { title: 'Dot Life', description: 'ドットライフ', rule: DotLife },
-  { title: 'Flock', description: 'フロック', rule: Flock },
-  { title: 'Mazectric', description: 'マゼクトリック', rule: Mazectric },
+  { title: 'Replicator', description: '同じ形が何度も現れる', rule: Replicator },
+  { title: 'Fredkin', description: '同じ形が何度も現れる', rule: Fredkin },
+  { title: 'Seeds', description: '爆発的に増えていく。シュシュポッポ', rule: Seeds },
+  { title: 'Live Free or Die', description: '隣接するセルがないセルのみが生き残る爆発ルール', rule: Live_Free_or_Die },
+  { title: 'Serviettes', description: 'すべてのセルが世代ごとに死ぬ爆発ルール', rule: Serviettes },
+  { title: 'Iceballs', description: '', rule: Iceballs },
+  { title: 'Life without Death', description: '一度生存セルになったら死ぬことはない', rule: Life_without_death },
+  { title: 'Dot Life', description: 'ライフゲームに似ている', rule: DotLife },
+  { title: 'Flock', description: '', rule: Flock },
+  { title: 'Mazectric', description: '迷路', rule: Mazectric },
   { title: 'Maze', description: '迷路', rule: Maze },
-  { title: 'B3S2', description: 'B3S2', rule: B3S2 },
-  { title: 'Three Four Life', description: '三四ライフ', rule: Three_Four_Life },
-  { title: 'Bacteria', description: 'バクテリア', rule: Bacteria },
-  { title: 'Bugs', description: 'バグ', rule: Bugs },
-  { title: 'Holstein', description: 'ホルスタイン', rule: Holstein },
-  { title: 'Amoeba', description: 'アメーバ', rule: Amoeba },
-  { title: 'HighLife', description: 'ハイライフ', rule: HighLife },
-  { title: 'Castles', description: '城', rule: Castles },
-  { title: 'Day and Night', description: '昼と夜', rule: Day_and_Night },
-  { title: 'Mazectric with Mice', description: 'マゼクトリックとマウス', rule: Mazectric_with_Mice },
-  { title: 'Maze with Mice', description: 'マウスと迷路', rule: Maze_with_Mice },
-  { title: 'Dry Life', description: 'ドライライフ', rule: DryLife },
-  { title: 'Vote', description: '投票', rule: Vote },
+  { title: 'B3S2', description: '', rule: B3S2 },
+  { title: 'Three Four Life', description: 'ライフゲームに似ている', rule: Three_Four_Life },
+  { title: 'Bacteria', description: 'きもい。固まっていれば徐々に増えていく傾向がある', rule: Bacteria },
+  { title: 'Bugs', description: 'きもい。真っ黒な物体がうじゃうじゃ', rule: Bugs },
+  { title: 'Holstein', description: '', rule: Holstein },
+  { title: 'Amoeba', description: '複雑', rule: Amoeba },
+  { title: 'HighLife', description: 'ライフゲームに似ている', rule: HighLife },
+  { title: 'Castles', description: '城のような形になる。周りがギザギザ', rule: Castles },
+  { title: 'Day and Night', description: '生死が安定している', rule: Day_and_Night },
+  { title: 'Mazectric with Mice', description: '迷路の中で何かが動いている', rule: Mazectric_with_Mice },
+  { title: 'Maze with Mice', description: '迷路の中で何かが動いている2', rule: Maze_with_Mice },
+  { title: 'Dry Life', description: 'ライフゲームに似ている', rule: DryLife },
+  { title: 'Vote', description: 'RPGマップのような形に安定する。周りのセルの多いほうの状態に変化するので「Vote」です', rule: Vote },
 ];
 
 export function bsToMultiRange(B = "", S = "") {
   const Dcon = [];
 
-  //さぼりしあ
   for(let l = 0;l<B.length;l++){
     let r = l;
     for(let i = l;i<B.length;i++){
