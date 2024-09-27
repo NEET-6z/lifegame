@@ -37,7 +37,6 @@ class LSHelper {
       const data = JSON.parse(datastr);
 
       if (!this.checkType(data)) throw new Error();
-      if (!this.checkValue(data)) throw new Error();
 
       return data;
     } catch {
@@ -47,7 +46,7 @@ class LSHelper {
   }
 
   static set(data, param) {
-    if (this.checkType(data) && this.checkValue(data)) {
+    if (this.checkType(data)) {
       localStorage.setItem(this.getKeyName(param), JSON.stringify(data));
     }
   }
@@ -64,9 +63,6 @@ class LSHelper {
     return true;
   }
 
-  static checkValue(data) {
-    return true;
-  }
 }
 
 export class LSGameData extends LSHelper {

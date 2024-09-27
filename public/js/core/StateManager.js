@@ -31,7 +31,7 @@ export class StateManager {
     this.states = {};
     this.nextStateId = 11;
 
-    this.paramSlot = [1, 2, 3, 4, 5];
+    this.paramSlot = [1, 2, 3, 4, 5]; 
     this.initializeStates();
 
 

@@ -4,45 +4,43 @@ import { GameManager } from "../../../js/core/GameManager.js";
 import { GameEvaluator } from "../../../js/core/stage/GameEvaluator.js";
 import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
 import { StateManager } from "../../../js/core/StateManager.js";
-import { Life } from "../../../js/data/rule.js";
+import { Life } from "../../../js/data/templates.js";
 
 checkStageAccess();
 
 const config = new Config({
-  resize: false,
-  editstate: false,
   mode: "stage",
   name: "b2",
 });
 
 class StageB2Evaluator extends GameEvaluator{
-  setCustomInfo(){
-    this.customInfo["turn"] = 0;
-    this.customInfo["complete"] = 0;
+  setgameInfo(){
+    this.gameInfo["turn"] = 0;
+    this.gameInfo["complete"] = 0;
 
   }
 
   evaluateTurn(){
     let res = false;
 
-    this.customInfo["turn"]++;
+    this.gameInfo["turn"]++;
 
 
     if(this.cmis0() && this.isblock()){
-      if(this.customInfo["turn"]==3){
+      if(this.gameInfo["turn"]==3){
         res = true;
-        this.customInfo["complete"] = 1;
+        this.gameInfo["complete"] = 1;
       }
       else{
-        this.customInfo["complete"] = -1;
+        this.gameInfo["complete"] = -1;
       }
     }
 
-    if(this.cmis0() && this.customInfo["turn"]>=3){
-      this.customInfo["complete"] = -1;
+    if(this.cmis0() && this.gameInfo["turn"]>=3){
+      this.gameInfo["complete"] = -1;
     }
     
-    this.updateInfo(this.customInfo);
+    this.updateInfo(this.gameInfo);
     return res
   }
 
@@ -65,7 +63,7 @@ class StageB2Evaluator extends GameEvaluator{
 }
 
 
-const board = new RectangularBoard(4);
+const board = new RectangularBoard(10);
 const stateManager = new StateManager(Life);
 const gameEvaluator = new StageB2Evaluator();
 

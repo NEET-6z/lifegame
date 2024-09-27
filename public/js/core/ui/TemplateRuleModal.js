@@ -1,4 +1,4 @@
-import { templates } from '../../data/rule.js';
+import { templates } from '../../data/templates.js';
 
 export const TemplateRuleModal = (gameManager) => {
   let selectedTemplate = null;
@@ -10,7 +10,7 @@ export const TemplateRuleModal = (gameManager) => {
     const userTemplatesFromStorage = localStorage.getItem('userTemplates');
     if (userTemplatesFromStorage) {
       userTemplates = JSON.parse(userTemplatesFromStorage);
-      nextTemplateId = userTemplates.length > 0 ? Math.max(...userTemplates.map(t => t.id)) + 1 : 0; // 最大ID + 1
+      nextTemplateId = userTemplates.length > 0 ? Math.max(...userTemplates.map(t => t.id)) + 1 : 0;
     } else {
       userTemplates = [];
     }
@@ -29,7 +29,7 @@ export const TemplateRuleModal = (gameManager) => {
     }
   };
 
-  const initializeTemplateList = () => {
+  const updateTemplateList = () => {
     if(currentTab=='default'){
       const templateList = document.getElementById('default-template-list')
       const templateItems = templates;
@@ -37,13 +37,29 @@ export const TemplateRuleModal = (gameManager) => {
       templateItems.forEach(template => {
         const listItem = document.createElement('li');
         listItem.classList.add('list-group-item', 'template-item');
+    
+        const contentWrapper = document.createElement('div');
+        contentWrapper.classList.add('d-flex', 'justify-content-between');
+        
+        const title = document.createElement('div');
+        title.textContent = template.title;
+    
+        const bsrule = document.createElement('div');
+        bsrule.classList.add('bsrule','text-info');
+        bsrule.textContent = template.bsRule;
+    
+        contentWrapper.appendChild(title);
+        contentWrapper.appendChild(bsrule);
+    
+        listItem.appendChild(contentWrapper);
         listItem.setAttribute('data-template', template.id);
-        listItem.textContent = template.title;
+    
         listItem.addEventListener('click', () => {
-          selectTemplate(listItem, template);
+            selectTemplate(listItem, template);
         });
+    
         templateList.appendChild(listItem);
-      });
+    });
     }
 
     else{
@@ -96,8 +112,9 @@ export const TemplateRuleModal = (gameManager) => {
 
   const onOkButtonClick = () => {
     if (selectedTemplate) {
+      console.log(selectedTemplate);
       document.getElementById('template-display').innerText = selectedTemplate.title;
-      gameManager.stateManager.setTemplate(selectedTemplate.rule);
+      gameManager.stateManager.setTemplate(JSON.parse(JSON.stringify(selectedTemplate.rule)));
 
       gameManager.stateEditor.updateStateList();
     }
@@ -116,14 +133,14 @@ export const TemplateRuleModal = (gameManager) => {
       currentTab = 'default';
       defaultTab.classList.add('active');
       userTab.classList.remove('active');
-      initializeTemplateList();
+      updateTemplateList();
     });
 
     userTab.addEventListener('click', () => {
       currentTab = 'user';
       userTab.classList.add('active');
       defaultTab.classList.remove('active');
-      initializeTemplateList();
+      updateTemplateList();
     });
   };
 
@@ -152,7 +169,7 @@ export const TemplateRuleModal = (gameManager) => {
 
         
         saveUserTemplate(newTemplate);
-        initializeTemplateList();
+        updateTemplateList();
         modal.hide();
       }
     });
@@ -168,7 +185,7 @@ export const TemplateRuleModal = (gameManager) => {
       } else if (event.target.classList.contains('delete-template')) {
         const template = userTemplates.find(t => t.id === Number(event.target.dataset.template));
         deleteUserTemplate(template);
-        initializeTemplateList();
+        updateTemplateList();
       }
     });
   };
@@ -191,7 +208,7 @@ export const TemplateRuleModal = (gameManager) => {
         template.title = titleInput.value;
         template.description = descriptionInput.value;
         updateUserTemplate(template);
-        initializeTemplateList();
+        updateTemplateList();
         modal.hide();
       }
     }, { once: true });
@@ -207,7 +224,7 @@ export const TemplateRuleModal = (gameManager) => {
   const init = () => {
     initializeUserTemplates();
     initializeTabButtons();
-    initializeTemplateList();
+    updateTemplateList();
     initializeOkButton();
     initializeAddTemplateButton();
     initializeEditButtons();

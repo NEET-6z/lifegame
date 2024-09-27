@@ -4,36 +4,34 @@ import { GameManager } from "../../../js/core/GameManager.js";
 import { GameEvaluator } from "../../../js/core/stage/GameEvaluator.js";
 import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
 import { StateManager } from "../../../js/core/StateManager.js";
-import { Life } from "../../../js/data/rule.js";
+import { Life } from "../../../js/data/templates.js";
 
 checkStageAccess();
 
 const config = new Config({
-  resize: false,
-  editstate: false,
   mode: "stage",
   name: "b3",
 });
 
 class StageB3Evaluator extends GameEvaluator{
-  setCustomInfo(){
-    this.customInfo["turn"] = 0;
-    this.customInfo["complete"] = 0;
+  setgameInfo(){
+    this.gameInfo["turn"] = 0;
+    this.gameInfo["complete"] = 0;
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
 
   evaluateTurn(){
     let res = false;
 
-    this.customInfo["turn"]++;
+    this.gameInfo["turn"]++;
 
-    if(this.cmis0() && this.customInfo["turn"]==1){
+    if(this.cmis0() && this.gameInfo["turn"]==1){
       if(JSON.stringify(this.preBoard) == JSON.stringify(this.gameManager.board.cells)){
-        this.customInfo["complete"] = 1;
+        this.gameInfo["complete"] = 1;
         res = true;
       }
       else{
-        this.customInfo["complete"] = -1;
+        this.gameInfo["complete"] = -1;
       }
 
     }
@@ -41,7 +39,7 @@ class StageB3Evaluator extends GameEvaluator{
     
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
     
-    this.updateInfo(this.customInfo);
+    this.updateInfo(this.gameInfo);
     return res
   }
 }

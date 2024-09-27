@@ -1,7 +1,7 @@
 export class Config {
-  constructor({ resize, editstate, mode, name}) {
-    this.resize = resize || false;
-    this.editstate = editstate || false;
+  constructor({ mode, name}) {
+    this.resize = mode=='free';
+    this.editstate = mode=='free';
     this.mode = mode || "free";
     this.name = name || "";
   }

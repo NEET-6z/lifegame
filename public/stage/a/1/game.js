@@ -4,13 +4,11 @@ import { GameManager } from "../../../js/core/GameManager.js";
 import { GameEvaluator } from "../../../js/core/stage/GameEvaluator.js";
 import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
 import { StateManager } from "../../../js/core/StateManager.js";
-import { Life } from "../../../js/data/rule.js";
+import { Life } from "../../../js/data/templates.js";
 
 checkStageAccess();
 
 const config = new Config({
-  resize: false,
-  editstate: false,
   mode: "stage",
   name: "a1",
 });
@@ -21,28 +19,28 @@ class StageA1Evaluator extends GameEvaluator{
     super();
   }
   
-  setCustomInfo(){
-    this.customInfo["turn"] = 0;
-    this.customInfo["complete"] = 0;
+  setgameInfo(){
+    this.gameInfo["turn"] = 0;
+    this.gameInfo["complete"] = 0;
 
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
   evaluateTurn(){
     let ch = false;
 
-    this.customInfo["turn"]++;
+    this.gameInfo["turn"]++;
     if(JSON.stringify(this.preBoard) == JSON.stringify(this.gameManager.board.cells)){
-      this.customInfo["complete"] = -1;
+      this.gameInfo["complete"] = -1;
     }
     
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
     
-    if(this.cmis0() && this.customInfo["turn"]>=10){
-      this.customInfo["complete"] = 1;
+    if(this.cmis0() && this.gameInfo["turn"]>=10){
+      this.gameInfo["complete"] = 1;
       ch = true;
     }
     
-    this.updateInfo(this.customInfo);
+    this.updateInfo(this.gameInfo);
     return ch;
   }
 }
@@ -51,6 +49,6 @@ class StageA1Evaluator extends GameEvaluator{
 
 const gameEvaluator = new StageA1Evaluator();
 
-const board = new RectangularBoard();
+const board = new RectangularBoard(10);
 const stateManager = new StateManager(Life);
 const gameManager = new GameManager(board, stateManager, gameEvaluator, config);

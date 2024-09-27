@@ -3,12 +3,10 @@ import { TriangularBoard } from "../../js/core/board/TriangularBoard.js";
 import { GameManager } from "../../js/core/GameManager.js";
 import { GameEvaluator } from "../../js/core/stage/GameEvaluator.js";
 import { StateManager } from "../../js/core/StateManager.js";
-import { Life } from "../../js/data/rule.js";
+import { Life } from "../../js/data/templates.js";
 
 
 const config = new Config({
-  resize: true,
-  editstate: true,
   mode: "free",
   name: "triangle",
 });

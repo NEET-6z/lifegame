@@ -13,7 +13,6 @@ export class GameManager {
     this.canvasId = "canvas";
     this.canvas = document.getElementById(this.canvasId);
     this.isPlaying = false;
-    this.isStop = false;
     this.animationId = null;
     this.selectedStateId = 2;
     this.speed = 200;
@@ -137,8 +136,6 @@ export class GameManager {
     this.animationId = setTimeout(() => this.gameLoop(), this.speed);
   }
 
-  
-  
   resizeBoard(size) {
     this.clear();
     this.board.resize(size);

@@ -6,7 +6,7 @@ export class GameEvaluator{
 	constructor(){
 		this.gameManager = null;
 		this.board = null;
-		this.customInfo = {};
+		this.gameInfo = {};
 	}
 	
 	
@@ -14,11 +14,11 @@ export class GameEvaluator{
 		this.gameManager = gameManager;
 		this.board = this.gameManager.board;
 		
-		this.setCustomInfo();
+		this.setgameInfo();
 		const infoArea = document.getElementById("infoarea");
 		infoArea.innerHTML = "";
 		
-		for (const [id, value] of Object.entries(this.customInfo)) {
+		for (const [id, value] of Object.entries(this.gameInfo)) {
 			const div = document.createElement("div");
 			div.className = "px-4";
 			div.id = `${id}_label`;
@@ -34,25 +34,25 @@ export class GameEvaluator{
     }
   }
 	start(){
-		this.setCustomInfo();
+		this.setgameInfo();
 	}
 	
 	stop(){
-		this.setCustomInfo();
-		this.updateInfo(this.customInfo);
+		this.setgameInfo();
+		this.updateInfo(this.gameInfo);
 	}
 	
-	setCustomInfo(){
-		this.customInfo["turn"] = 0;
+	setgameInfo(){
+		this.gameInfo["turn"] = 0;
 	}
 	
 	evaluateTurn(){
-		this.customInfo["turn"]++;
-		this.updateInfo(this.customInfo);
+		this.gameInfo["turn"]++;
+		this.updateInfo(this.gameInfo);
 		return false;
 	}
 
 	cmis0(){
-		return (this.customInfo["complete"]===0);
+		return (this.gameInfo["complete"]===0);
 	}
 }

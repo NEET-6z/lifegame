@@ -8,34 +8,32 @@ import { State, StateManager } from "../../../js/core/StateManager.js";
 checkStageAccess();
 
 const config = new Config({
-  resize: false,
-  editstate: false,
   mode: "stage",
   name: "c4",
 });
 
 class StageC4Evaluator extends GameEvaluator{
-  setCustomInfo(){
-    this.customInfo["turn"] = 0;
-    this.customInfo["complete"] = 0;
+  setgameInfo(){
+    this.gameInfo["turn"] = 0;
+    this.gameInfo["complete"] = 0;
 
     if(this.board.getValueCount(2)>20){
-      this.customInfo["complete"] = -2;
+      this.gameInfo["complete"] = -2;
     }
   }
 
   evaluateTurn(){
     let ch = false;
 
-    this.customInfo["turn"]++;
+    this.gameInfo["turn"]++;
 
     if(this.cmis0() && this.board.getValueCount(3)==49){
-      this.customInfo["complete"] = 1;
+      this.gameInfo["complete"] = 1;
       ch = true;
     }
     
     
-    this.updateInfo(this.customInfo);
+    this.updateInfo(this.gameInfo);
     return ch
   }
 }

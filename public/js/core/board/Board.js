@@ -3,7 +3,7 @@
 
 export default class Board {
   constructor(defaultsize, defaultCells, lockedCells) {
-    this.size = defaultsize || 10;
+    this.size = defaultsize || 20;
     this.defaultCells = defaultCells || undefined;
     this.lockedCells = lockedCells || undefined;
     this.historyCells = [this.generateCells(1)];

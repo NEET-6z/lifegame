@@ -5,22 +5,20 @@ import { GameManager } from "../../../js/core/GameManager.js";
 import { GameEvaluator } from "../../../js/core/stage/GameEvaluator.js";
 import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
 import { StateManager } from "../../../js/core/StateManager.js";
-import { Life } from "../../../js/data/rule.js";
+import { Life } from "../../../js/data/templates.js";
 
 checkStageAccess();
 
 const config = new Config({
-  resize: false,
-  editstate: false,
   mode: "stage",
   name: "c3",
 });
 
 class StageC3Evaluator extends GameEvaluator{
-  setCustomInfo(){
-    this.customInfo["turn"] = 0;
-    this.customInfo["complete"] = 0;
-    this.customInfo["period length"] = 1;
+  setgameInfo(){
+    this.gameInfo["turn"] = 0;
+    this.gameInfo["complete"] = 0;
+    this.gameInfo["period length"] = 1;
 
   
     this.history = new Array(1000000).fill(-1);
@@ -46,35 +44,35 @@ class StageC3Evaluator extends GameEvaluator{
   evaluateTurn(){
     let ch = false;
 
-    this.customInfo["turn"]++;
+    this.gameInfo["turn"]++;
 
     const hash = this.hash(this.gameManager.board.cells);
     if(this.history[hash]==-1){
-      this.history[hash] = this.customInfo["turn"];
+      this.history[hash] = this.gameInfo["turn"];
     }
-    if(this.customInfo["turn"]-this.history[hash]>=1){
-      this.customInfo["period length"] = this.customInfo["turn"]-this.history[hash];
+    if(this.gameInfo["turn"]-this.history[hash]>=1){
+      this.gameInfo["period length"] = this.gameInfo["turn"]-this.history[hash];
     }
-    if(this.cmis0() && this.customInfo["turn"]-this.history[hash]==10){
+    if(this.cmis0() && this.gameInfo["turn"]-this.history[hash]==10){
       ch = true;
-      this.customInfo["complete"] = 1;
+      this.gameInfo["complete"] = 1;
     }
 
-    if(this.customInfo["turn"]>=10){
+    if(this.gameInfo["turn"]>=10){
       const p = this.queue.pop();
-      if(this.customInfo['turn']-10>=this.history[p]){
+      if(this.gameInfo['turn']-10>=this.history[p]){
         this.history[p] = -1;
       }
     }
-    this.history[hash] = this.customInfo["turn"];
+    this.history[hash] = this.gameInfo["turn"];
     this.queue.push(hash)
 
-    this.updateInfo(this.customInfo);
+    this.updateInfo(this.gameInfo);
     return ch
   }
 }
 
-const board = new RectangularBoard();
+const board = new RectangularBoard(10);
 const stateManager = new StateManager(Life);
 const gameEvaluator = new StageC3Evaluator();
 

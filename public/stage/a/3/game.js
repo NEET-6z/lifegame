@@ -6,22 +6,20 @@ import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
 import { StateManager } from "../../../js/core/StateManager.js";
 
 import { Queue } from "../../../js/common/utils.js";
-import { Life } from "../../../js/data/rule.js";
+import { Life } from "../../../js/data/templates.js";
 
 checkStageAccess();
 
 const config = new Config({
-  resize: false,
-  editstate: false,
   mode: "stage",
   name: "a3",
 });
 
 class StageA3Evaluator extends GameEvaluator{
-  setCustomInfo(){
-    this.customInfo["turn"] = 0;
-    this.customInfo["complete"] = 0;
-    this.customInfo["period length"] = 1;
+  setgameInfo(){
+    this.gameInfo["turn"] = 0;
+    this.gameInfo["complete"] = 0;
+    this.gameInfo["period length"] = 1;
 
   
     this.history = new Array(1000000).fill(-1);
@@ -47,34 +45,34 @@ class StageA3Evaluator extends GameEvaluator{
   evaluateTurn(){
     let ch = false;
 
-    this.customInfo["turn"]++;
+    this.gameInfo["turn"]++;
 
     const hash = this.hash(this.gameManager.board.cells);
     if(this.history[hash]==-1){
-      this.history[hash] = this.customInfo["turn"];
+      this.history[hash] = this.gameInfo["turn"];
     }
 
-    if(this.cmis0() && this.customInfo["turn"]-this.history[hash]>=2){
+    if(this.cmis0() && this.gameInfo["turn"]-this.history[hash]>=2){
       ch = true;
-      this.customInfo["complete"] = 1;
-      this.customInfo["period length"] = this.customInfo["turn"]-this.history[hash];
+      this.gameInfo["complete"] = 1;
+      this.gameInfo["period length"] = this.gameInfo["turn"]-this.history[hash];
     }
 
-    if(this.customInfo["turn"]>=20){
+    if(this.gameInfo["turn"]>=20){
       const p = this.queue.pop();
-      if(this.customInfo['turn']-20>=this.history[p]){
+      if(this.gameInfo['turn']-20>=this.history[p]){
         this.history[p] = -1;
       }
     }
-    this.history[hash] = this.customInfo["turn"];
+    this.history[hash] = this.gameInfo["turn"];
     this.queue.push(hash)
 
-    this.updateInfo(this.customInfo);
+    this.updateInfo(this.gameInfo);
     return ch
   }
 }
 
-const board = new RectangularBoard();
+const board = new RectangularBoard(10);
 const stateManager = new StateManager(Life);
 const gameEvaluator = new StageA3Evaluator();
 
