@@ -1,4 +1,3 @@
-
 //状態を表す
 export class State {
   constructor(
@@ -10,7 +9,6 @@ export class State {
     transitionRules = [],
     params = [0, 0, 0, 0, 0]
   ) {
-
     this.id = id;
     this.name = name;
     this.color = color;
@@ -31,14 +29,12 @@ export class StateManager {
     this.states = {};
     this.nextStateId = 11;
 
-    this.paramSlot = [1, 2, 3, 4, 5]; 
+    this.paramSlot = [1, 2, 3, 4, 5];
     this.initializeStates();
 
-
-    if(template){
+    if (template) {
       this.setTemplate(template);
     }
-    
   }
 
   initializeStates() {
@@ -92,29 +88,28 @@ export class StateManager {
     const state = this.getState(id);
     if (state) {
       for (let rule of state.transitionRules) {
-        if(rule.operator=='and'){
-          
+        if (rule.operator == "and") {
           let ok = true;
           for (let c of rule.condition) {
             let target = this.ruleTypeMatching(c.target, neighbors);
             let min = this.ruleTypeMatching(c.min, neighbors);
             let max = this.ruleTypeMatching(c.max, neighbors);
-            
+
             if (!(min <= target && target <= max)) {
               ok = false;
             }
           }
           if (ok) return rule.nextState;
         }
-        
-        if(rule.operator=='or'){
+
+        if (rule.operator == "or") {
           let ok = false;
           for (let c of rule.condition) {
             let target = this.ruleTypeMatching(c.target, neighbors);
             let min = this.ruleTypeMatching(c.min, neighbors);
             let max = this.ruleTypeMatching(c.max, neighbors);
-            
-            if ((min <= target && target <= max)) {
+
+            if (min <= target && target <= max) {
               ok = true;
               break;
             }
@@ -142,15 +137,10 @@ export class StateManager {
     }
   }
 
-  setTemplate(tp){
+  setTemplate(tp) {
     this.initializeStates();
     tp.forEach((s) => {
       this.setState(s);
     });
   }
-
-
-
-  
 }
-

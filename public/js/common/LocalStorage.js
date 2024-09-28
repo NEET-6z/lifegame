@@ -28,11 +28,10 @@ class LSHelper {
 
   static get(param) {
     if (localStorage.getItem(this.getKeyName(param)) === null) {
-      this.set(JSON.stringify(this.default), param);
+      this.set(this.default, param);
     }
 
     const datastr = localStorage.getItem(this.getKeyName(param));
-
     try {
       const data = JSON.parse(datastr);
 
@@ -132,6 +131,51 @@ export class LSStageProgress extends LSHelper {
       Type.isNumber(data.a) &&
       Type.isNumber(data.b) &&
       Type.isNumber(data.c)
+    );
+  }
+}
+
+export class LSTemplate extends LSHelper {
+  static name = "userTemplates";
+  static default = [];
+
+  static checkType(data) {
+    return (
+      Type.isArray(data, (tp) => 
+        Type.isNumber(tp.id) &&
+        Type.isString(tp.title) && 
+        Type.isString(tp.description) &&
+        Type.isArray(tp.rule, (state) => 
+          Type.isObject(state) &&
+          Type.isNumber(state.id) &&
+          Type.isString(state.name) &&
+          Type.isString(state.color) &&
+          Type.isBoolean(state.canSelect) &&
+          Type.isNumber(state.defaultState) &&
+          Type.isArray(
+            state.transitionRules,
+            (rule) =>
+              Type.isObject(rule) &&
+              Type.isArray(
+                rule.condition,
+                (cond) =>
+                  Type.isObject(cond) &&
+                  Type.isObject(cond.target) &&
+                  Type.isObject(cond.min) &&
+                  Type.isObject(cond.max) &&
+                  Type.isString(cond.target.type) &&
+                  Type.isNumber(cond.target.value) &&
+                  Type.isString(cond.min.type) &&
+                  Type.isNumber(cond.min.value) &&
+                  Type.isString(cond.max.type) &&
+                  Type.isNumber(cond.max.value)
+              ) &&
+              Type.isString(rule.operator) &&
+              Type.isNumber(rule.nextState)
+          ) &&
+          Type.isArray(state.params, Type.isNumber)
+        )
+      )
     );
   }
 }

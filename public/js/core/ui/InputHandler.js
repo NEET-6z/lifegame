@@ -17,7 +17,11 @@ export function InputHandler(gameManager) {
 
     function handleMouseDown(e) {
       const rect = canvas.getBoundingClientRect();
-      const { x, y } = gameManager.board.getCellPosition(rect, e.clientX, e.clientY);
+      const { x, y } = gameManager.board.getCellPosition(
+        rect,
+        e.clientX,
+        e.clientY
+      );
       switch (e.button) {
         case 0:
           gameManager.setCell(x, y, gameManager.selectedStateId);
@@ -39,11 +43,16 @@ export function InputHandler(gameManager) {
     function handleMouseMove(e) {
       if (gameManager.isPlaying) return;
       const rect = canvas.getBoundingClientRect();
-      const { x, y } = gameManager.board.getCellPosition(rect, e.clientX, e.clientY);
+      const { x, y } = gameManager.board.getCellPosition(
+        rect,
+        e.clientX,
+        e.clientY
+      );
       if (!gameManager.board.isValidCoordinate(x, y)) return;
 
       if (lastCell.x !== x || lastCell.y !== y) {
-        if (isDraggingLeft) gameManager.setCell(x, y, gameManager.selectedStateId);
+        if (isDraggingLeft)
+          gameManager.setCell(x, y, gameManager.selectedStateId);
         if (isDraggingRight) gameManager.setCell(x, y, 1);
         lastCell = { x, y };
       }
@@ -59,17 +68,31 @@ export function InputHandler(gameManager) {
     document.getElementById("speed").value = parseInt(gameManager.speed);
     document.getElementById("size").value = parseInt(gameManager.board.size);
 
-    document.getElementById("start").addEventListener("click", () => gameManager.start());
-    document.getElementById("undo").addEventListener("click", () => gameManager.undo());
-    document.getElementById("stop").addEventListener("click", () => gameManager.stop());
-    document.getElementById("clear").addEventListener("click", () => gameManager.clear());
-    document.getElementById("random").addEventListener("click", () => gameManager.random());
+    document
+      .getElementById("start")
+      .addEventListener("click", () => gameManager.start());
+    document
+      .getElementById("undo")
+      .addEventListener("click", () => gameManager.undo());
+    document
+      .getElementById("stop")
+      .addEventListener("click", () => gameManager.stop());
+    document
+      .getElementById("clear")
+      .addEventListener("click", () => gameManager.clear());
+    document
+      .getElementById("random")
+      .addEventListener("click", () => gameManager.random());
 
-    document.getElementById("speed").addEventListener("input", handleSpeedInput);
+    document
+      .getElementById("speed")
+      .addEventListener("input", handleSpeedInput);
     document.getElementById("speed").addEventListener("blur", handleSpeedBlur);
 
     if (config.resize) {
-      document.getElementById("size").addEventListener("input", handleSizeInput);
+      document
+        .getElementById("size")
+        .addEventListener("input", handleSizeInput);
       document.getElementById("size").addEventListener("blur", handleSizeBlur);
     } else {
       const sizeEl = document.getElementById("size");
@@ -77,7 +100,9 @@ export function InputHandler(gameManager) {
     }
 
     if (config.reshape) {
-      document.getElementById("shape").addEventListener("change", handleShapeChange);
+      document
+        .getElementById("shape")
+        .addEventListener("change", handleShapeChange);
     } else {
       const shapeEl = document.getElementById("shape");
       if (shapeEl) shapeEl.disabled = true;
@@ -120,7 +145,12 @@ export function InputHandler(gameManager) {
       case "x":
         const allState = gameManager.stateManager.getAllState();
         const stateCount = allState.length;
-        let nextidx = (allState.findIndex(item => item.id === gameManager.selectedStateId) + 1) % stateCount;
+        let nextidx =
+          (allState.findIndex(
+            (item) => item.id === gameManager.selectedStateId
+          ) +
+            1) %
+          stateCount;
         gameManager.selectedStateId = allState[nextidx].id;
         gameManager.stateEditor.updateStateList();
         break;
@@ -133,5 +163,5 @@ export function InputHandler(gameManager) {
   initCanvasEvent();
   initControlEvent();
   document.addEventListener("keydown", handleKeyPress);
-  window.addEventListener('resize', () => gameManager.draw());
+  window.addEventListener("resize", () => gameManager.draw());
 }

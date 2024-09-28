@@ -10,36 +10,33 @@ checkStageAccess();
 
 const config = new Config({
   mode: "stage",
-  name: "a5",
+  name: "b5",
 });
 
-
-class StageB5Evaluator extends GameEvaluator{
-  setgameInfo(){
+class StageB5Evaluator extends GameEvaluator {
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
     this.gameInfo["startcount"] = this.board.getValueCount(2);
   }
 
-  evaluateTurn(){
+  evaluateTurn() {
     let res = false;
 
     this.gameInfo["turn"]++;
 
-
-    if(this.cmis0() && this.gameInfo["startcount"]*5 <= this.board.getValueCount(2)){
+    if (
+      this.cmis0() &&
+      this.gameInfo["startcount"] * 5 <= this.board.getValueCount(2)
+    ) {
       this.gameInfo["complete"] = 1;
       res = true;
     }
 
     this.updateInfo(this.gameInfo);
-    return res
+    return res;
   }
 }
-
-
-
-
 
 const board = new RectangularBoard(15);
 const stateManager = new StateManager(Life);

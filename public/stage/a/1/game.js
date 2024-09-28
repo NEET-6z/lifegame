@@ -13,39 +13,39 @@ const config = new Config({
   name: "a1",
 });
 
-
-class StageA1Evaluator extends GameEvaluator{
-  constructor(){
+class StageA1Evaluator extends GameEvaluator {
+  constructor() {
     super();
   }
-  
-  setgameInfo(){
+
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
 
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
-  evaluateTurn(){
+  evaluateTurn() {
     let ch = false;
 
     this.gameInfo["turn"]++;
-    if(JSON.stringify(this.preBoard) == JSON.stringify(this.gameManager.board.cells)){
+    if (
+      JSON.stringify(this.preBoard) ==
+      JSON.stringify(this.gameManager.board.cells)
+    ) {
       this.gameInfo["complete"] = -1;
     }
-    
+
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
-    
-    if(this.cmis0() && this.gameInfo["turn"]>=10){
+
+    if (this.cmis0() && this.gameInfo["turn"] >= 10) {
       this.gameInfo["complete"] = 1;
       ch = true;
     }
-    
+
     this.updateInfo(this.gameInfo);
     return ch;
   }
 }
-
-
 
 const gameEvaluator = new StageA1Evaluator();
 

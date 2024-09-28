@@ -1,9 +1,11 @@
+import { Queue } from "../../../js/common/utils.js";
 import { Config } from "../../../js/config/Config.js";
 import { RectangularBoard } from "../../../js/core/board/RectangularBoard.js";
 import { GameManager } from "../../../js/core/GameManager.js";
 import { GameEvaluator } from "../../../js/core/stage/GameEvaluator.js";
 import { checkStageAccess } from "../../../js/core/stage/stageAccess.js";
-import { State, StateManager } from "../../../js/core/StateManager.js";
+import { StateManager } from "../../../js/core/StateManager.js";
+import { Life } from "../../../js/data/templates.js";
 
 checkStageAccess();
 
@@ -12,111 +14,66 @@ const config = new Config({
   name: "c4",
 });
 
-class StageC4Evaluator extends GameEvaluator{
-  setgameInfo(){
+class StageC4Evaluator extends GameEvaluator {
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
+    this.gameInfo["period length"] = 1;
 
-    if(this.board.getValueCount(2)>20){
-      this.gameInfo["complete"] = -2;
-    }
+    this.history = new Array(1000000).fill(-1);
+    this.queue = new Queue();
+    const hash = this.hash();
+    this.history[hash] = 0;
+    this.queue.push(hash);
   }
 
-  evaluateTurn(){
+  hash() {
+    let base = this.gameManager.stateManager.getAllState().length;
+    let mod = 1000000;
+    let ch = 0;
+    for (let i = 0; i < this.gameManager.board.size; i++) {
+      for (let j = 0; j < this.gameManager.board.getWsize(i); j++) {
+        ch = (ch * base + this.gameManager.board.getCell(j, i)) % mod;
+      }
+    }
+
+    return ch;
+  }
+
+  evaluateTurn() {
     let ch = false;
 
     this.gameInfo["turn"]++;
 
-    if(this.cmis0() && this.board.getValueCount(3)==49){
-      this.gameInfo["complete"] = 1;
-      ch = true;
+    const hash = this.hash(this.gameManager.board.cells);
+    if (this.history[hash] == -1) {
+      this.history[hash] = this.gameInfo["turn"];
     }
-    
-    
+    if (this.gameInfo["turn"] - this.history[hash] >= 1) {
+      this.gameInfo["period length"] =
+        this.gameInfo["turn"] - this.history[hash];
+    }
+    if (this.cmis0() && this.gameInfo["turn"] - this.history[hash] == 10) {
+      ch = true;
+      this.gameInfo["complete"] = 1;
+    }
+
+    if (this.gameInfo["turn"] >= 10) {
+      const p = this.queue.pop();
+      if (this.gameInfo["turn"] - 10 >= this.history[p]) {
+        this.history[p] = -1;
+      }
+    }
+    this.history[hash] = this.gameInfo["turn"];
+    this.queue.push(hash);
+
     this.updateInfo(this.gameInfo);
-    return ch
+    return ch;
   }
 }
 
-
-
-const board = new RectangularBoard(7);
+const board = new RectangularBoard(10);
+const stateManager = new StateManager(Life);
 const gameEvaluator = new StageC4Evaluator();
-const stateManager = new StateManager();
-
-stateManager.setState(
-  new State(1, "Dead", "white", true, 1, [
-    {
-      condition: [
-        {
-          target: {
-            type: 'state',
-            value: 2,
-          },
-          min: {
-            type: "number",
-            value: 3,
-          },
-          max: {
-            type: "number",
-            value:3,
-          }
-        },
-      ],
-      nextState: 2,
-      operator: 'or',
-    },
-  ])
-)
-
-stateManager.setState(
-  new State(2, "Alive", "black", true, 3, [
-    {
-      condition: [
-        {
-          target: {
-            type: 'state',
-            value: 2,
-          },
-          min: {
-            type: "number",
-            value: 2,
-          },
-          max: {
-            type: "number",
-            value:3,
-          }
-        },
-      ],
-      nextState: 2,
-      operator: 'or',
-    },
-  ])
-)
-
-stateManager.setState(
-  new State(3, "死骸", "#ccc", false, 3, [
-    {
-      condition: [
-        {
-          target: {
-            type: 'state',
-            value: 2,
-          },
-          min: {
-            type: "number",
-            value: 3,
-          },
-          max: {
-            type: "number",
-            value:3,
-          }
-        },
-      ],
-      nextState: 2,
-      operator: 'or',
-    },
-  ])
-)
 
 const gameManager = new GameManager(board, stateManager, gameEvaluator, config);

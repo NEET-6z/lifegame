@@ -13,11 +13,11 @@ const config = new Config({
   name: "b3",
 });
 
+
 class StageB3Evaluator extends GameEvaluator{
   setgameInfo(){
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
-    this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
 
   evaluateTurn(){
@@ -25,19 +25,20 @@ class StageB3Evaluator extends GameEvaluator{
 
     this.gameInfo["turn"]++;
 
-    if(this.cmis0() && this.gameInfo["turn"]==1){
-      if(JSON.stringify(this.preBoard) == JSON.stringify(this.gameManager.board.cells)){
+    if(this.cmis0() && this.board.getValueCount(2)==0){
+      if(this.gameInfo["turn"]==5){
         this.gameInfo["complete"] = 1;
         res = true;
       }
       else{
         this.gameInfo["complete"] = -1;
       }
+    }
 
+    if(this.cmis0() && this.gameInfo["turn"]>=5){
+      this.gameInfo["complete"] = -1;
     }
     
-    
-    this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
     
     this.updateInfo(this.gameInfo);
     return res
@@ -45,33 +46,12 @@ class StageB3Evaluator extends GameEvaluator{
 }
 
 
-const defaultCells = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 2, 2, 2, 2, 1, 1, 1],
-  [1, 1, 1, 2, 1, 1, 2, 1, 1, 1],
-  [1, 1, 1, 2, 1, 1, 2, 1, 1, 1],
-  [1, 1, 1, 2, 2, 2, 2, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-]
-const lockedCells = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-  [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]
 
-const board = new RectangularBoard(10,defaultCells,lockedCells);
+const board = new RectangularBoard(10);
 const stateManager = new StateManager(Life);
 const gameEvaluator = new StageB3Evaluator();
 
 const gameManager = new GameManager(board, stateManager, gameEvaluator, config);
+
+
+

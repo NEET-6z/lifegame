@@ -32,7 +32,6 @@ export class GameManager {
       );
     }
     this.draw();
-    
 
     this.inputHandler = InputHandler(this);
     this.stateEditor = createStateEditor(this);
@@ -49,7 +48,6 @@ export class GameManager {
 
     this.draw();
   }
-
 
   draw() {
     this.board.render(this.canvas, this.stateManager, this.isPlaying);
@@ -101,7 +99,7 @@ export class GameManager {
     if (this.isPlaying) {
       this.isPlaying = false;
       this.stopGameLoop();
-      
+
       this.board.cells = JSON.parse(
         JSON.stringify(this.board.historyCells.slice(-1)[0])
       );
@@ -128,7 +126,11 @@ export class GameManager {
     this.board.nextGeneration(this.stateManager);
     this.draw();
 
-    if (this.gameEvaluator.evaluateTurn() && !this.completeFlag && this.config.mode == "stage") {
+    if (
+      this.gameEvaluator.evaluateTurn() &&
+      !this.completeFlag &&
+      this.config.mode == "stage"
+    ) {
       this.stageComplete();
       this.completeFlag = true;
     }
@@ -141,7 +143,7 @@ export class GameManager {
     this.board.resize(size);
     this.draw();
   }
-  
+
   setSpeed(newSpeed) {
     this.speed = newSpeed;
     if (this.isPlaying) {
@@ -155,7 +157,7 @@ export class GameManager {
     this.board.setCell(x, y, v);
     this.draw();
   }
-  
+
   saveToLocalStorage() {
     const data = {
       gameManager: {
@@ -174,35 +176,34 @@ export class GameManager {
       },
     };
 
-
     LSGameData.set(data, this.config.name);
     console.log("All data saved to localStorage");
   }
 
   loadFromLocalStorage() {
     if (this.isPlaying) return;
-    
+
     const data = LSGameData.get(this.config.name);
-    
+
     if (data) {
       this.speed = data.gameManager.speed;
       this.selectedStateId = data.gameManager.selectedStateId;
 
       this.board.resize(data.board.size);
       this.board.cells = JSON.parse(JSON.stringify(data.board.cells));
-      
+
       this.stateManager.states = data.stateManager.states;
       this.stateManager.nextStateId = data.stateManager.nextStateId;
     }
   }
-  
+
   stageComplete() {
     this.saveToLocalStorage();
     if (!this.completeFlag) {
       this.completeFlag = true;
       this.showCompletionScreen();
     }
-  
+
     if (!localStorage.getItem("stageProgress")) {
       localStorage.setItem(
         "stageProgress",
@@ -211,13 +212,13 @@ export class GameManager {
     }
     const progress = LSStageProgress.get();
     const url = window.location.pathname;
-  
+
     const path = url.split("/").filter((segment) => segment);
     progress[path[1]] = Math.max(parseInt(progress[path[1]], 10), path[2]);
-  
-    LSStageProgress.set(progress)
+
+    LSStageProgress.set(progress);
   }
-  
+
   updateStageComplete() {
     document.getElementById("clearStatus").innerHTML = "クリア済み";
     document.getElementById("lastClearData").hidden = false;
@@ -225,16 +226,16 @@ export class GameManager {
       this.loadFromLocalStorage();
       this.draw();
     });
-  
+
     document.getElementById("nextStage").classList.remove("disabled");
     this.draw();
   }
-  
+
   showCompletionScreen(message = "Stage Completed!") {
     this.updateStageComplete();
-  
+
     document.getElementById("stageClearMessage").textContent = message;
-  
+
     var stageClearModal = new bootstrap.Modal(
       document.getElementById("stageClearModal")
     );

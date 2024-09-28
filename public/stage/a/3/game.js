@@ -15,13 +15,12 @@ const config = new Config({
   name: "a3",
 });
 
-class StageA3Evaluator extends GameEvaluator{
-  setgameInfo(){
+class StageA3Evaluator extends GameEvaluator {
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
     this.gameInfo["period length"] = 1;
 
-  
     this.history = new Array(1000000).fill(-1);
     this.queue = new Queue();
     const hash = this.hash();
@@ -29,46 +28,47 @@ class StageA3Evaluator extends GameEvaluator{
     this.queue.push(hash);
   }
 
-  hash(){
+  hash() {
     let base = this.gameManager.stateManager.getAllState().length;
     let mod = 1000000;
     let ch = 0;
-    for(let i = 0;i<this.gameManager.board.size;i++){
-      for(let j = 0;j<this.gameManager.board.getWsize(i);j++){
-        ch = (ch*base+this.gameManager.board.getCell(j,i))%mod;
+    for (let i = 0; i < this.gameManager.board.size; i++) {
+      for (let j = 0; j < this.gameManager.board.getWsize(i); j++) {
+        ch = (ch * base + this.gameManager.board.getCell(j, i)) % mod;
       }
     }
 
     return ch;
   }
 
-  evaluateTurn(){
+  evaluateTurn() {
     let ch = false;
 
     this.gameInfo["turn"]++;
 
     const hash = this.hash(this.gameManager.board.cells);
-    if(this.history[hash]==-1){
+    if (this.history[hash] == -1) {
       this.history[hash] = this.gameInfo["turn"];
     }
 
-    if(this.cmis0() && this.gameInfo["turn"]-this.history[hash]>=2){
+    if (this.cmis0() && this.gameInfo["turn"] - this.history[hash] >= 2) {
       ch = true;
       this.gameInfo["complete"] = 1;
-      this.gameInfo["period length"] = this.gameInfo["turn"]-this.history[hash];
+      this.gameInfo["period length"] =
+        this.gameInfo["turn"] - this.history[hash];
     }
 
-    if(this.gameInfo["turn"]>=20){
+    if (this.gameInfo["turn"] >= 20) {
       const p = this.queue.pop();
-      if(this.gameInfo['turn']-20>=this.history[p]){
+      if (this.gameInfo["turn"] - 20 >= this.history[p]) {
         this.history[p] = -1;
       }
     }
     this.history[hash] = this.gameInfo["turn"];
-    this.queue.push(hash)
+    this.queue.push(hash);
 
     this.updateInfo(this.gameInfo);
-    return ch
+    return ch;
   }
 }
 

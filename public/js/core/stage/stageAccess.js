@@ -30,7 +30,7 @@ export function checkStageAccess() {
           <a href="/stage/" class="btn btn-primary mt-3">ステージ選択に戻る</a>
         </div>
       `;
-    throw new Error("このステージは未開放です。処理を中断します。");
+    throw new Error("このステージは未開放です");
   }
   
 

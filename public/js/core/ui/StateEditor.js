@@ -1,7 +1,6 @@
 // 状態の編集
 
 export const createStateEditor = (gameManager) => {
-  
   const stateListContainer = document.getElementById(
     "editRuleButtonsContainer"
   );
@@ -10,7 +9,6 @@ export const createStateEditor = (gameManager) => {
   const saveNameColorButton = document.getElementById("saveNameColor");
   const addStateButton = document.getElementById("state-addon");
 
-  
   const createColorOptions = () => {
     const predefinedColors = [
       "white",
@@ -49,7 +47,6 @@ export const createStateEditor = (gameManager) => {
   const attachEventListeners = () => {
     stateListContainer.addEventListener("click", handleStateListClick);
 
-    
     if (gameManager.config.editstate) {
       addStateButton.addEventListener("click", addState);
     }
@@ -127,7 +124,7 @@ export const createStateEditor = (gameManager) => {
         ? "border-primary border-4"
         : "border-secondary"
     } rounded`;
-    stateInfo.style = "min-width:100px;min-height:40px"
+    stateInfo.style = "min-width:100px;min-height:40px";
     stateInfo.innerHTML = `
       <span class="state-color me-2" style="display:inline-block;width:25px;height:25px;background-color:${state.color};border-radius:50%;"></span>
       <strong>${state.name}</strong>
@@ -316,7 +313,11 @@ const createRuleEditor = (gameManager, stateId) => {
   const addNewRule = () => {
     if (gameManager.config.editstate) {
       rulesContainer.appendChild(
-        createTransitionRuleElement({ condition: [], nextState: 0, operator: 'and'})
+        createTransitionRuleElement({
+          condition: [],
+          nextState: 0,
+          operator: "and",
+        })
       );
     }
   };
@@ -356,9 +357,14 @@ const createRuleEditor = (gameManager, stateId) => {
       transitionRuleElement.querySelector(".transition-target").value
     );
 
-    const operator = transitionRuleElement.querySelector('.operator-select').value;
+    const operator =
+      transitionRuleElement.querySelector(".operator-select").value;
 
-    return { condition: conditions, nextState: transitionTarget, operator: operator };
+    return {
+      condition: conditions,
+      nextState: transitionTarget,
+      operator: operator,
+    };
   };
 
   const extractConditionFromElement = (conditionElement) => {
@@ -408,7 +414,6 @@ const createRuleEditor = (gameManager, stateId) => {
     const conditionsContainer = el.querySelector(".conditions");
     const addConditionButton = el.querySelector(".add-condition");
 
-
     const operatorSelect = el.querySelector(".operator-select");
     operatorSelect.value = rule.operator || "and"; // 初期値を設定
 
@@ -444,7 +449,6 @@ const createRuleEditor = (gameManager, stateId) => {
     return el;
   };
 
-
   const createParamElement = (p) => {
     const value = state.params[p - 1] ? state.params[p - 1] : 0;
 
@@ -466,7 +470,9 @@ const createRuleEditor = (gameManager, stateId) => {
      <div class="d-flex">
       <h3 style="margin:0px 10px;">ルール</h3>
      </div>
-      <button class="btn btn-danger btn-sm delete-transition-rule" ${gameManager.config.editstate ? "" : "disabled"}>
+      <button class="btn btn-danger btn-sm delete-transition-rule" ${
+        gameManager.config.editstate ? "" : "disabled"
+      }>
         このルールを削除
       </button>
     </div>
@@ -477,7 +483,9 @@ const createRuleEditor = (gameManager, stateId) => {
       }>条件を追加</button>
       <div class="mt-3 d-flex align-items-center">
         <span>
-          <select class="operator-select form-control me-2" id="operator-select" style="width: auto; display:inline;">
+          <select class="operator-select form-control me-2" id="operator-select" style="width: auto; display:inline;" ${
+            gameManager.config.editstate ? "" : "disabled"
+          }>
             <option value="and">すべての条件</option>
             <option value="or">1つ以上の条件</option>
           </select>  

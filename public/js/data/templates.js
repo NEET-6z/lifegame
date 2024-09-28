@@ -41,7 +41,7 @@ export const templates = [
   { title: 'GNARL', description: '', rule: GNARL, bsRule: "B1/S1" },
   { title: 'Replicator', description: '同じ形が何度も現れる', rule: Replicator, bsRule: "B1357/S1357" },
   { title: 'Fredkin', description: '同じ形が何度も現れる', rule: Fredkin, bsRule: "B1357/S02468" },
-  { title: 'Seeds', description: '爆発的に増えていく。シュシュポッポ', rule: Seeds, bsRule: "B2/S02468" },
+  { title: 'Seeds', description: '爆発的に増えていく。', rule: Seeds, bsRule: "B2/S02468" },
   { title: 'Live Free or Die', description: '隣接するセルがないセルのみが生き残る爆発ルール', rule: Live_Free_or_Die, bsRule: "B2/S0" },
   { title: 'Serviettes', description: 'すべてのセルが世代ごとに死ぬ爆発ルール', rule: Serviettes, bsRule: "B234/S" },
   { title: 'Iceballs', description: '', rule: Iceballs, bsRule: "B25678/S5678" },
@@ -62,7 +62,7 @@ export const templates = [
   { title: 'Mazectric with Mice', description: '迷路の中で何かが動いている', rule: Mazectric_with_Mice, bsRule: "B37/S1234" },
   { title: 'Maze with Mice', description: '迷路の中で何かが動いている2', rule: Maze_with_Mice, bsRule: "B37/S12345" },
   { title: 'Dry Life', description: 'ライフゲームに似ている', rule: DryLife, bsRule: "B37/S23" },
-  { title: 'Vote', description: 'RPGマップのような形に安定する。周りのセルの多いほうの状態に変化するので「Vote」です', rule: Vote, bsRule: "B5678/S45678" },
+  { title: 'Vote', description: 'RPGマップのような形に安定する。周りのセルの多いほうの状態に変化するので「Vote」', rule: Vote, bsRule: "B5678/S45678" },
 ];
 
 export function bsToMultiRange(B = "", S = "") {

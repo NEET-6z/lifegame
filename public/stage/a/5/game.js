@@ -13,31 +13,29 @@ const config = new Config({
   name: "a5",
 });
 
-class StageA3Evaluator extends GameEvaluator{
-  setgameInfo(){
+class StageA3Evaluator extends GameEvaluator {
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
   }
 
-  evaluateTurn(){
+  evaluateTurn() {
     let ch = false;
 
     this.gameInfo["turn"]++;
-    if(this.cmis0() && this.gameInfo["turn"]>=100){
+    if (this.cmis0() && this.gameInfo["turn"] >= 100) {
       this.gameInfo["complete"] = -1;
     }
-    
-    if(this.cmis0() && this.board.getValueCount(2)===0){
+
+    if (this.cmis0() && this.board.getValueCount(2) === 0) {
       this.gameInfo["complete"] = 1;
       ch = true;
     }
-    
-    
+
     this.updateInfo(this.gameInfo);
-    return ch
+    return ch;
   }
 }
-
 
 const defaultCells = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -55,7 +53,7 @@ const defaultCells = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2],
-]
+];
 const lockedCells = [
   [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -72,7 +70,7 @@ const lockedCells = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-]
+];
 
 const board = new RectangularBoard(15, defaultCells, lockedCells);
 const stateManager = new StateManager(Life);

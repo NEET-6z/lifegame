@@ -65,7 +65,13 @@ export class RectangularBoard extends Board {
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         const stateId = this.getCell(x, y);
-        const state = stateManager.getState(stateId); 
+        let state = stateManager.getState(stateId); 
+        
+        if(!state){
+          state = stateManager.getState(1);
+          this.setCell(x,y,0);
+        }
+
         const xPos = x * cellSize + halfCellSize;
         const yPos = y * cellSize + halfCellSize;
 

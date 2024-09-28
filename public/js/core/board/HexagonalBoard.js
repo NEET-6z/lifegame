@@ -124,7 +124,12 @@ export class HexagonalBoard extends Board {
         let x = j * hexWidth + (i % 2 == 1) * b + b;
 
         const stateId = this.getCell(j, i);
-        const state = stateManager.getState(stateId);
+        let state = stateManager.getState(stateId);
+
+        if(!state){
+          state = stateManager.getState(1);
+          this.setCell(x,y,0);
+        }
 
         const gridcolor = this.isCellLocked(x, y) ? this.lockedgridColor : this.gridColor;
 

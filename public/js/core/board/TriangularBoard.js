@@ -118,7 +118,12 @@ export class TriangularBoard extends Board {
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x <= y * 2; x++) {
         const stateId = this.getCell(x, y);
-        const state = stateManager.getState(stateId);
+        let state = stateManager.getState(stateId);
+
+        if(!state){
+          state = stateManager.getState(1);
+          this.setCell(x,y,0);
+        }
 
         const xPos =
           (x * cellWidth) / 2 + (canvas.width / 2 - (y * cellWidth) / 2);

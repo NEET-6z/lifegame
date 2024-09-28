@@ -13,36 +13,35 @@ const config = new Config({
   name: "a4",
 });
 
-class StageA3Evaluator extends GameEvaluator{
-  setgameInfo(){
+class StageA4Evaluator extends GameEvaluator {
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
 
-    if(this.board.getValueCount(2)<10){
-      this.gameInfo['complete'] = -2;
+    if (this.board.getValueCount(2) < 20) {
+      this.gameInfo["complete"] = -2;
     }
   }
 
-  evaluateTurn(){
+  evaluateTurn() {
     let ch = false;
 
     this.gameInfo["turn"]++;
-    if(this.cmis0() && this.gameInfo["turn"]>=100){
+    if (this.cmis0() && this.gameInfo["turn"] >= 100) {
       this.gameInfo["complete"] = -1;
     }
-    
-    if(this.cmis0() && this.board.getValueCount(2)===0){
+
+    if (this.cmis0() && this.board.getValueCount(2) === 0) {
       this.gameInfo["complete"] = 1;
       ch = true;
     }
     this.updateInfo(this.gameInfo);
-    return ch
+    return ch;
   }
 }
 
-
-const board = new RectangularBoard(10);
+const board = new RectangularBoard(7);
 const stateManager = new StateManager(Life);
-const gameEvaluator = new StageA3Evaluator();
+const gameEvaluator = new StageA4Evaluator();
 
 const gameManager = new GameManager(board, stateManager, gameEvaluator, config);

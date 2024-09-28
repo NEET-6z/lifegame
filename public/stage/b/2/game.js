@@ -13,55 +13,57 @@ const config = new Config({
   name: "b2",
 });
 
-class StageB2Evaluator extends GameEvaluator{
-  setgameInfo(){
+class StageB2Evaluator extends GameEvaluator {
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
-
   }
 
-  evaluateTurn(){
+  evaluateTurn() {
     let res = false;
 
     this.gameInfo["turn"]++;
 
-
-    if(this.cmis0() && this.isblock()){
-      if(this.gameInfo["turn"]==3){
+    if (this.cmis0() && this.isblock()) {
+      if (this.gameInfo["turn"] == 3) {
         res = true;
         this.gameInfo["complete"] = 1;
-      }
-      else{
+      } else {
         this.gameInfo["complete"] = -1;
       }
     }
 
-    if(this.cmis0() && this.gameInfo["turn"]>=3){
+    if (this.cmis0() && this.gameInfo["turn"] >= 3) {
       this.gameInfo["complete"] = -1;
     }
-    
+
     this.updateInfo(this.gameInfo);
-    return res
+    return res;
   }
 
-  isblock(){
-    let ac=0;
+  isblock() {
+    let ac = 0;
     let hasblock = 0;
-    for(let i = 0;i<this.board.size;i++){
-      for(let j = 0;j<this.board.getWsize(i);j++){
-        if(this.board.getCell(j,i)==2) ac++;
+    for (let i = 0; i < this.board.size; i++) {
+      for (let j = 0; j < this.board.getWsize(i); j++) {
+        if (this.board.getCell(j, i) == 2) ac++;
 
-        if(i!=this.board.size-1 && j!=this.board.size-1){
-          if(this.board.getCell(j,i)+this.board.getCell(j+1,i)+this.board.getCell(j,i+1)+this.board.getCell(j+1,i+1)==8){
+        if (i != this.board.size - 1 && j != this.board.size - 1) {
+          if (
+            this.board.getCell(j, i) +
+              this.board.getCell(j + 1, i) +
+              this.board.getCell(j, i + 1) +
+              this.board.getCell(j + 1, i + 1) ==
+            8
+          ) {
             hasblock = 1;
           }
         }
       }
     }
-    return (ac==4)&&hasblock;
+    return ac == 4 && hasblock;
   }
 }
-
 
 const board = new RectangularBoard(10);
 const stateManager = new StateManager(Life);

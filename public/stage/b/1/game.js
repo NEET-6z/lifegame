@@ -13,31 +13,33 @@ const config = new Config({
   name: "b1",
 });
 
-
-class StageB1Evaluator extends GameEvaluator{
-  setgameInfo(){
+class StageB1Evaluator extends GameEvaluator {
+  setgameInfo() {
     this.gameInfo["turn"] = 0;
     this.gameInfo["complete"] = 0;
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
 
-  evaluateTurn(){
+  evaluateTurn() {
     let res = false;
 
     this.gameInfo["turn"]++;
-    if(this.cmis0() && JSON.stringify(this.preBoard) == JSON.stringify(this.gameManager.board.cells) && this.board.getValueCount(2)>=16){
+    if (
+      this.cmis0() &&
+      JSON.stringify(this.preBoard) ==
+        JSON.stringify(this.gameManager.board.cells) &&
+      this.board.getValueCount(2) >= 16
+    ) {
       this.gameInfo["complete"] = 1;
       res = true;
     }
-    
+
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
-    
+
     this.updateInfo(this.gameInfo);
-    return res
+    return res;
   }
 }
-
-
 
 const board = new RectangularBoard(5);
 const stateManager = new StateManager(Life);
