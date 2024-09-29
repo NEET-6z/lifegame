@@ -22,6 +22,7 @@ class Type {
   }
 }
 
+// 型が正しくなければdefault値を返すようにする
 class LSHelper {
   static name = "default";
   static default = "default";

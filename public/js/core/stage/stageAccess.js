@@ -23,7 +23,7 @@ export function checkStageAccess() {
 
   const stageNum = parseInt(path[2], 10);
 
-  if (path.length == 3 && progress[path[1]] + 1 < stageNum) {
+  if (path.length === 3 && progress[path[1]] + 1 < stageNum) {
     document.getElementById("page").innerHTML = `
         <div class="container mt-5 text-center">
           <h1>このステージはまだ未開放です。</h1>

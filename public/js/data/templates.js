@@ -35,7 +35,7 @@ export const Vote = bsToMultiRange("5678", "45678");
 export const templates = [
   { title: 'Life', description: '通常のライフゲーム', rule: Life, bsRule: "B3/S23" },
   { title: 'Antilife', description: '', rule: Antilife, bsRule: "B0123478/S01234678" },
-  { title: 'Oils', description: 'オイル', rule: Oils, bsRule: "B014/S2" },
+  { title: 'Oils', description: '', rule: Oils, bsRule: "B014/S2" },
   { title: 'Invertamaze', description: '世代ごとに反転する迷路を作成する', rule: Invertamaze, bsRule: "B028/S0124" },
   { title: 'H Trees', description: 'Hな形になる', rule: H_trees, bsRule: "B1/S012345678" },
   { title: 'GNARL', description: '', rule: GNARL, bsRule: "B1/S1" },
@@ -71,7 +71,7 @@ export function bsToMultiRange(B = "", S = "") {
   for(let l = 0;l<B.length;l++){
     let r = l;
     for(let i = l;i<B.length;i++){
-      if(i-l==B[i]-B[l]) r = i;
+      if(i-l===B[i]-B[l]) r = i;
     }
     Dcon.push(
       {
@@ -98,7 +98,7 @@ export function bsToMultiRange(B = "", S = "") {
   for(let l = 0;l<S.length;l++){
     let r = l;
     for(let i = l;i<S.length;i++){
-      if(i-l==S[i]-S[l]) r = i;
+      if(i-l===S[i]-S[l]) r = i;
     }
     Acon.push(
       {

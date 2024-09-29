@@ -15,15 +15,12 @@ const config = new Config({
 
 class StageB1Evaluator extends GameEvaluator {
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();
     this.gameInfo["complete"] = 0;
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
 
   evaluateTurn() {
-    let res = false;
-
-    this.gameInfo["turn"]++;
     if (
       this.cmis0() &&
       JSON.stringify(this.preBoard) ==
@@ -31,13 +28,11 @@ class StageB1Evaluator extends GameEvaluator {
       this.board.getValueCount(2) >= 16
     ) {
       this.gameInfo["complete"] = 1;
-      res = true;
     }
 
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
 
-    this.updateInfo(this.gameInfo);
-    return res;
+    return super.evaluateTurn();
   }
 }
 

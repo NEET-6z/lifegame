@@ -1,6 +1,6 @@
 
 
-
+//ボードの状態と描画
 export default class Board {
   constructor(defaultsize, defaultCells, lockedCells) {
     this.size = defaultsize || 20;
@@ -18,7 +18,8 @@ export default class Board {
     this.gridLineWidth = 1;
 
   }
-
+  
+  // 初期化する
   initializeBoard(history) {
     if(history){
       this.historyCells.push(JSON.parse(JSON.stringify(this.cells)))
@@ -98,6 +99,7 @@ export default class Board {
     return count;
   }
 
+  //近傍の座標を取得
   getNeighbors(x, y) {
     const neighbors = [];
     const directions = [
@@ -123,8 +125,11 @@ export default class Board {
     return neighbors;
   }
 
+
   random(allState){
     const c = allState.length;
+    if(c===0) return;
+
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.getWsize(y); x++) {
         const stateid = allState[Math.floor(Math.random() * c)].id;
@@ -142,6 +147,7 @@ export default class Board {
     this.initializeBoard();
   }
 
+  // 座標からセルの添字を特定
   getCellPosition(rect, clientX, clientY) {
     throw new Error("getCellPosition must be overridden in a subclass");
   }

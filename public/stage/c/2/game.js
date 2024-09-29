@@ -15,33 +15,28 @@ const config = new Config({
 
 class StageC2Evaluator extends GameEvaluator{
   setgameInfo(){
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();;
     this.gameInfo["complete"] = 0;
   }
 
   evaluateTurn(){
-    let ch = false;
-
-    this.gameInfo["turn"]++;
 
     if(this.cmis0()){
       if(this.gameInfo["turn"]<100){
         for(let i = 0;i<this.board.size;i++){
-          if(this.board.getCell(0,i)==2){
+          if(this.board.getCell(0,i) === 2){
             this.gameInfo["complete"] = -1;
             break;
           }
         }
       }
       else{ 
-        ch = true;
         this.gameInfo["complete"] = 1; 
       }
     }
     
     
-    this.updateInfo(this.gameInfo);
-    return ch
+    return super.evaluateTurn();
   }
 }
 

@@ -18,26 +18,21 @@ const config = new Config({
 
 class StageC3Evaluator extends GameEvaluator {
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();;
     this.gameInfo["complete"] = 0;
   }
 
   evaluateTurn() {
-    let ch = false;
-
-    this.gameInfo["turn"]++;
-
-    if (this.cmis0() && this.gameInfo["turn"] == 30) {
+    if (this.cmis0() && this.gameInfo["turn"] === 30) {
       if (this.board.getValueCount(2) >= 1) {
         this.gameInfo["complete"] = 1;
-        ch = true;
       } else {
         this.gameInfo["complete"] = -1;
       }
     }
 
-    this.updateInfo(this.gameInfo);
-    return ch;
+    return super.evaluateTurn();
+
   }
 }
 

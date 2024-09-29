@@ -1,0 +1,33 @@
+.stage-card {
+  border: 1px solid #ddd;
+  width: 100px;
+  height: 100px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-size: 40px;
+}
+
+.stage-btn {
+  width: 100px;
+  height: 100px;
+  font-size: 40px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* クリア済みのステージ */
+.stage.unlocked {
+  background-color: lightgreen;
+}
+
+/* 未開放のステージ */
+.stage.locked {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

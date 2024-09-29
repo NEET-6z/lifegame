@@ -14,7 +14,7 @@ const config = new Config({
 
 class StageC1Evaluator extends GameEvaluator {
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();;
     this.gameInfo["complete"] = 0;
 
     if (this.board.getValueCount(2) > 20) {
@@ -23,17 +23,12 @@ class StageC1Evaluator extends GameEvaluator {
   }
 
   evaluateTurn() {
-    let ch = false;
 
-    this.gameInfo["turn"]++;
-
-    if (this.cmis0() && this.board.getValueCount(3) == 49) {
+    if (this.cmis0() && this.board.getValueCount(3) === 49) {
       this.gameInfo["complete"] = 1;
-      ch = true;
     }
 
-    this.updateInfo(this.gameInfo);
-    return ch;
+    return super.evaluateTurn();
   }
 }
 

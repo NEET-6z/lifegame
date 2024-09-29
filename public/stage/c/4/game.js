@@ -16,11 +16,11 @@ const config = new Config({
 
 class StageC4Evaluator extends GameEvaluator {
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();;
     this.gameInfo["complete"] = 0;
     this.gameInfo["period length"] = 1;
 
-    this.history = new Array(1000000).fill(-1);
+    this.history = new Array(10000000).fill(-1);
     this.queue = new Queue();
     const hash = this.hash();
     this.history[hash] = 0;
@@ -29,32 +29,27 @@ class StageC4Evaluator extends GameEvaluator {
 
   hash() {
     let base = this.gameManager.stateManager.getAllState().length;
-    let mod = 1000000;
-    let ch = 0;
+    let mod = 10000000;
+    let h = 0;
     for (let i = 0; i < this.gameManager.board.size; i++) {
       for (let j = 0; j < this.gameManager.board.getWsize(i); j++) {
-        ch = (ch * base + this.gameManager.board.getCell(j, i)) % mod;
+        h = (h * base + this.gameManager.board.getCell(j, i)) % mod;
       }
     }
 
-    return ch;
+    return h;
   }
 
   evaluateTurn() {
-    let ch = false;
-
-    this.gameInfo["turn"]++;
-
     const hash = this.hash(this.gameManager.board.cells);
-    if (this.history[hash] == -1) {
+    if (this.history[hash] === -1) {
       this.history[hash] = this.gameInfo["turn"];
     }
     if (this.gameInfo["turn"] - this.history[hash] >= 1) {
       this.gameInfo["period length"] =
         this.gameInfo["turn"] - this.history[hash];
     }
-    if (this.cmis0() && this.gameInfo["turn"] - this.history[hash] == 10) {
-      ch = true;
+    if (this.cmis0() && this.gameInfo["turn"] - this.history[hash] === 10) {
       this.gameInfo["complete"] = 1;
     }
 
@@ -67,8 +62,8 @@ class StageC4Evaluator extends GameEvaluator {
     this.history[hash] = this.gameInfo["turn"];
     this.queue.push(hash);
 
-    this.updateInfo(this.gameInfo);
-    return ch;
+    return super.evaluateTurn();
+
   }
 }
 

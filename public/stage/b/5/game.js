@@ -15,26 +15,20 @@ const config = new Config({
 
 class StageB5Evaluator extends GameEvaluator {
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();;
     this.gameInfo["complete"] = 0;
     this.gameInfo["startcount"] = this.board.getValueCount(2);
   }
 
   evaluateTurn() {
-    let res = false;
-
-    this.gameInfo["turn"]++;
-
     if (
       this.cmis0() &&
       this.gameInfo["startcount"] * 5 <= this.board.getValueCount(2)
     ) {
       this.gameInfo["complete"] = 1;
-      res = true;
     }
 
-    this.updateInfo(this.gameInfo);
-    return res;
+    return super.evaluateTurn();
   }
 }
 

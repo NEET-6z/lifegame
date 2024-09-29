@@ -121,7 +121,7 @@ export class TriangularBoard extends Board {
         let state = stateManager.getState(stateId);
 
         if(!state){
-          state = stateManager.getState(1);
+          state = stateManager.getState(0);
           this.setCell(x,y,0);
         }
 

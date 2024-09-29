@@ -19,7 +19,7 @@ export class GameManager {
     this.completeFlag = false;
 
     // フリーモードの場合、前の盤面を引き継げる
-    if (this.config.mode == "free") {
+    if (this.config.mode === "free") {
       if (localStorage.getItem("shouldClearCache") === "true") {
         localStorage.removeItem("shouldClearCache");
         LSGameData.remove(this.config.name);
@@ -37,7 +37,7 @@ export class GameManager {
     this.stateEditor = createStateEditor(this);
     this.templateRuleModal = TemplateRuleModal(this);
 
-    if (this.config.mode == "stage") {
+    if (this.config.mode === "stage") {
       const data = LSGameData.get(this.config.name);
       if (data) {
         this.updateStageComplete();
@@ -127,9 +127,9 @@ export class GameManager {
     this.draw();
 
     if (
-      this.gameEvaluator.evaluateTurn() &&
+      this.gameEvaluator.evaluateTurn() ===1 &&
       !this.completeFlag &&
-      this.config.mode == "stage"
+      this.config.mode === "stage"
     ) {
       this.stageComplete();
       this.completeFlag = true;

@@ -35,6 +35,7 @@ export class GameEvaluator{
   }
 	start(){
 		this.setgameInfo();
+		this.gameInfo["turn"]++;
 	}
 	
 	stop(){
@@ -47,9 +48,9 @@ export class GameEvaluator{
 	}
 	
 	evaluateTurn(){
-		this.gameInfo["turn"]++;
 		this.updateInfo(this.gameInfo);
-		return false;
+		this.gameInfo["turn"]++;
+		return this.gameInfo["complete"];
 	}
 
 	cmis0(){

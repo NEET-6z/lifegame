@@ -1,10 +1,11 @@
+//二次元配列初期化
 export function Array2(rows, cols, initialValue = null) {
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => initialValue)
   );
 }
 
-
+//正多角形を描画
 export function drawRegularPolygon(
   ctx,
   sides,
@@ -50,6 +51,8 @@ export function drawRegularPolygon(
   ctx.fill();
 }
 
+
+// 簡易queue
 export class Queue {
   constructor() {
     this.map = new Map();
@@ -74,10 +77,6 @@ export class Queue {
 
   size() {
     return this.tail - this.head;
-  }
-
-  isEmpty() {
-    return this.size() === 0;
   }
 }
 

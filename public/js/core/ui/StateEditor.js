@@ -1,5 +1,6 @@
 // 状態の編集
 
+//ゲーム画面右側の状態一覧
 export const createStateEditor = (gameManager) => {
   const stateListContainer = document.getElementById(
     "editRuleButtonsContainer"
@@ -229,6 +230,7 @@ export const createStateEditor = (gameManager) => {
   };
 };
 
+//ルール編集のmodal
 const createRuleEditor = (gameManager, stateId) => {
   const state = gameManager.stateManager.getState(stateId);
   let modalClone,
@@ -282,7 +284,7 @@ const createRuleEditor = (gameManager, stateId) => {
           .map(
             (st) =>
               `<option value="${st.id}" ${
-                state.defaultState == st.id ? "selected" : ""
+                state.defaultState === st.id ? "selected" : ""
               }>${st.name}</option>`
           )
           .join("")}
@@ -333,9 +335,7 @@ const createRuleEditor = (gameManager, stateId) => {
       state.defaultState = Number(defaultTransition);
       state.transitionRules = rules;
 
-      Array.from(customParameterContainer.children).map(
-        extractParamFromElement
-      );
+      Array.from(customParameterContainer.children).map(setParamFromElement);
 
       closeModal();
     } else {
@@ -343,7 +343,7 @@ const createRuleEditor = (gameManager, stateId) => {
     }
   };
 
-  const extractParamFromElement = (paramElement) => {
+  const setParamFromElement = (paramElement) => {
     const id = paramElement.querySelector(".param-label").innerHTML;
     const value = paramElement.querySelector(".param-value").value;
     state.params[id - 1] = Number(value);
@@ -500,7 +500,7 @@ const createRuleEditor = (gameManager, stateId) => {
               .map(
                 (st) =>
                   `<option value="${st.id}" ${
-                    rule.nextState == st.id ? "selected" : ""
+                    rule.nextState === st.id ? "selected" : ""
                   }>${st.name}</option>`
               )
               .join("")}
@@ -571,17 +571,17 @@ const createRuleEditor = (gameManager, stateId) => {
           gameManager.config.editstate ? "" : "disabled"
         }>
           <option value="number" ${
-            item.type == "number" ? "selected" : ""
+            item.type === "number" ? "selected" : ""
           }>数値</option>
           <option value="state" ${
-            item.type == "state" ? "selected" : ""
+            item.type === "state" ? "selected" : ""
           }>状態の個数</option>
           <option value="param" ${
-            item.type == "param" ? "selected" : ""
+            item.type === "param" ? "selected" : ""
           }>パラメータの総和</option>
         </select>
         <select class="form-select form-select-sm condition-state-select ml-1" style="${
-          item.type == "state" ? "" : "display:none;"
+          item.type === "state" ? "" : "display:none;"
         }" ${gameManager.config.editstate ? "" : "disabled"}>
           ${allStates
             .map(
@@ -594,13 +594,13 @@ const createRuleEditor = (gameManager, stateId) => {
         </select>
         
         <input type="number" class="form-control form-control-sm condition-value-input ml-1" style="${
-          item.type == "number" ? "" : "display:none;"
+          item.type === "number" ? "" : "display:none;"
         }" value="${item.value}" ${
       gameManager.config.editstate ? "" : "disabled"
     }>
 
         <select class="form-select form-select-sm condition-param-select ml-1" style="${
-          item.type == "param" ? "" : "display:none;"
+          item.type === "param" ? "" : "display:none;"
         }" ${gameManager.config.editstate ? "" : "disabled"}>
           ${[1, 2, 3, 4, 5]
             .map(

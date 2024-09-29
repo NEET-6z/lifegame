@@ -88,7 +88,7 @@ export class StateManager {
     const state = this.getState(id);
     if (state) {
       for (let rule of state.transitionRules) {
-        if (rule.operator == "and") {
+        if (rule.operator === "and") {
           let ok = true;
           for (let c of rule.condition) {
             let target = this.ruleTypeMatching(c.target, neighbors);
@@ -102,7 +102,7 @@ export class StateManager {
           if (ok) return rule.nextState;
         }
 
-        if (rule.operator == "or") {
+        if (rule.operator === "or") {
           let ok = false;
           for (let c of rule.condition) {
             let target = this.ruleTypeMatching(c.target, neighbors);
@@ -123,13 +123,13 @@ export class StateManager {
   }
 
   ruleTypeMatching(item, neighbors) {
-    if (item.type == "state") {
+    if (item.type === "state") {
       return neighbors.filter((e) => e.value === item.value).length;
     }
-    if (item.type == "number") {
+    if (item.type === "number") {
       return item.value;
     }
-    if (item.type == "param") {
+    if (item.type === "param") {
       return neighbors.reduce(
         (sum, e) => sum + this.getState(e.value).params[item.value],
         0

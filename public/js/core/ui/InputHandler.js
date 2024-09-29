@@ -7,6 +7,7 @@ export function InputHandler(gameManager) {
   function initCanvasEvent() {
     let isDraggingLeft = false;
     let isDraggingRight = false;
+
     let lastCell = { x: -1, y: -1 };
 
     canvas.addEventListener("mousedown", handleMouseDown);
@@ -50,6 +51,7 @@ export function InputHandler(gameManager) {
       );
       if (!gameManager.board.isValidCoordinate(x, y)) return;
 
+      //一つ前に塗ったセルと同じセルのときは何もしない
       if (lastCell.x !== x || lastCell.y !== y) {
         if (isDraggingLeft)
           gameManager.setCell(x, y, gameManager.selectedStateId);

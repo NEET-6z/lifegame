@@ -19,31 +19,27 @@ class StageA1Evaluator extends GameEvaluator {
   }
 
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
-    this.gameInfo["complete"] = 0;
+    super.setgameInfo();
 
+    this.gameInfo["complete"] = 0;
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
   evaluateTurn() {
-    let ch = false;
-
-    this.gameInfo["turn"]++;
     if (
+      this.cmis0() &&
       JSON.stringify(this.preBoard) ==
-      JSON.stringify(this.gameManager.board.cells)
+        JSON.stringify(this.gameManager.board.cells)
     ) {
       this.gameInfo["complete"] = -1;
     }
 
-    this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
-
     if (this.cmis0() && this.gameInfo["turn"] >= 10) {
       this.gameInfo["complete"] = 1;
-      ch = true;
     }
 
-    this.updateInfo(this.gameInfo);
-    return ch;
+    this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
+
+    return super.evaluateTurn();
   }
 }
 

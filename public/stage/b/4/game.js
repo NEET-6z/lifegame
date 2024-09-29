@@ -1,3 +1,4 @@
+import { Array2 } from "../../../js/common/utils.js";
 import { Config } from "../../../js/config/Config.js";
 import { RectangularBoard } from "../../../js/core/board/RectangularBoard.js";
 import { GameManager } from "../../../js/core/GameManager.js";
@@ -15,23 +16,19 @@ const config = new Config({
 
 class StageB4Evaluator extends GameEvaluator {
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();;
     this.gameInfo["complete"] = 0;
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
   }
 
   evaluateTurn() {
-    let res = false;
 
-    this.gameInfo["turn"]++;
-
-    if (this.cmis0() && this.gameInfo["turn"] == 1) {
+    if (this.cmis0() && this.gameInfo["turn"] === 1) {
       if (
         JSON.stringify(this.preBoard) ==
         JSON.stringify(this.gameManager.board.cells)
       ) {
         this.gameInfo["complete"] = 1;
-        res = true;
       } else {
         this.gameInfo["complete"] = -1;
       }
@@ -39,37 +36,40 @@ class StageB4Evaluator extends GameEvaluator {
 
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
 
-    this.updateInfo(this.gameInfo);
-    return res;
+    return super.evaluateTurn();
   }
 }
 
-const defaultCells = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 2, 2, 2, 2, 1, 1, 1],
-  [1, 1, 1, 2, 1, 1, 2, 1, 1, 1],
-  [1, 1, 1, 2, 1, 1, 2, 1, 1, 1],
-  [1, 1, 1, 2, 2, 2, 2, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
-const lockedCells = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-  [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-];
+let defaultCells = Array2(20,20,1);
+let lockedCells = Array2(20,20,0);
 
-const board = new RectangularBoard(10, defaultCells, lockedCells);
+defaultCells[8][8] = 2;
+defaultCells[8][9] = 2;
+defaultCells[8][10] = 2;
+defaultCells[8][11] = 2;
+defaultCells[9][11] = 2;
+defaultCells[10][11] = 2;
+defaultCells[11][11] = 2;
+defaultCells[11][10] = 2;
+defaultCells[11][9] = 2;
+defaultCells[11][8] = 2;
+defaultCells[10][8] = 2;
+defaultCells[9][8] = 2;
+
+lockedCells[8][8] = 2;
+lockedCells[8][9] = 2;
+lockedCells[8][10] = 2;
+lockedCells[8][11] = 2;
+lockedCells[9][11] = 2;
+lockedCells[10][11] = 2;
+lockedCells[11][11] = 2;
+lockedCells[11][10] = 2;
+lockedCells[11][9] = 2;
+lockedCells[11][8] = 2;
+lockedCells[10][8] = 2;
+lockedCells[9][8] = 2;
+
+const board = new RectangularBoard(20, defaultCells, lockedCells);
 const stateManager = new StateManager(Life);
 const gameEvaluator = new StageB4Evaluator();
 

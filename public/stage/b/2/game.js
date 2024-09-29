@@ -15,18 +15,13 @@ const config = new Config({
 
 class StageB2Evaluator extends GameEvaluator {
   setgameInfo() {
-    this.gameInfo["turn"] = 0;
+    super.setgameInfo();;
     this.gameInfo["complete"] = 0;
   }
 
   evaluateTurn() {
-    let res = false;
-
-    this.gameInfo["turn"]++;
-
     if (this.cmis0() && this.isblock()) {
-      if (this.gameInfo["turn"] == 3) {
-        res = true;
+      if (this.gameInfo["turn"] === 3) {
         this.gameInfo["complete"] = 1;
       } else {
         this.gameInfo["complete"] = -1;
@@ -37,8 +32,7 @@ class StageB2Evaluator extends GameEvaluator {
       this.gameInfo["complete"] = -1;
     }
 
-    this.updateInfo(this.gameInfo);
-    return res;
+    return super.evaluateTurn();
   }
 
   isblock() {
@@ -46,22 +40,21 @@ class StageB2Evaluator extends GameEvaluator {
     let hasblock = 0;
     for (let i = 0; i < this.board.size; i++) {
       for (let j = 0; j < this.board.getWsize(i); j++) {
-        if (this.board.getCell(j, i) == 2) ac++;
+        if (this.board.getCell(j, i) === 2) ac++;
 
         if (i != this.board.size - 1 && j != this.board.size - 1) {
           if (
             this.board.getCell(j, i) +
               this.board.getCell(j + 1, i) +
               this.board.getCell(j, i + 1) +
-              this.board.getCell(j + 1, i + 1) ==
-            8
+              this.board.getCell(j + 1, i + 1) === 8
           ) {
             hasblock = 1;
           }
         }
       }
     }
-    return ac == 4 && hasblock;
+    return ac === 4 && hasblock;
   }
 }
 

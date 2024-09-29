@@ -121,13 +121,13 @@ export class HexagonalBoard extends Board {
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
         let y = i * hexHeight + hexRadius;
-        let x = j * hexWidth + (i % 2 == 1) * b + b;
+        let x = j * hexWidth + (i % 2 === 1) * b + b;
 
         const stateId = this.getCell(j, i);
         let state = stateManager.getState(stateId);
 
         if(!state){
-          state = stateManager.getState(1);
+          state = stateManager.getState(0);
           this.setCell(x,y,0);
         }
 
