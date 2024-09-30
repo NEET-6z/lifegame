@@ -28,7 +28,7 @@ class StageC5Evaluator extends GameEvaluator {
       this.gameInfo["complete"] = -1;
     }
 
-    return super.evaluateTurn();
+    super.evaluateTurn();
   }
 }
 

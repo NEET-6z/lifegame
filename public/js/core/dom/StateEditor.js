@@ -456,7 +456,7 @@ const createRuleEditor = (gameManager, stateId) => {
     el.className = "";
 
     el.innerHTML = `
-      <label class="form-label param-label mb-0" for="param-${p}" style="font-size: 0.9em;">${p}</label>
+      <label class="form-label param-label mb-0" for="param-${p}" style="font-size: 0.9em;">p${p}</label>
       <input type="number" class="form-control form-control-sm param-value" value="${value}" ${
       gameManager.config.editstate ? "" : "disabled"
     } style="width: 60px; padding: 2px 4px;">
@@ -607,7 +607,7 @@ const createRuleEditor = (gameManager, stateId) => {
               (p) =>
                 `<option value="${p - 1}" ${
                   p - 1 === item.value ? "selected" : ""
-                }>${p}</option>`
+                }>p${p}</option>`
             )
             .join("")}
         </select>

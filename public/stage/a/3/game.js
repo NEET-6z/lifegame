@@ -63,7 +63,7 @@ class StageA3Evaluator extends GameEvaluator {
     this.history[hash] = this.gameInfo["turn"];
     this.queue.push(hash);
 
-    return super.evaluateTurn();
+    super.evaluateTurn();
   }
 }
 

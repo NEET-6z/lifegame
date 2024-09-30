@@ -25,7 +25,6 @@ export class RectangularBoard extends Board {
     for (const [dx, dy] of directions) {
       const newX = x + dx;
       const newY = y + dy;
-
       neighbors.push({ y: newY, x: newX, value: this.getCell(newX, newY) });
     }
 

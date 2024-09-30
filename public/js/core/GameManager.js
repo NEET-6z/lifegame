@@ -1,7 +1,7 @@
-import { LSGameData, LSStageProgress } from "../common/LocalStorage.js";
-import { InputHandler } from "./ui/InputHandler.js";
-import { createStateEditor } from "./ui/StateEditor.js";
-import { TemplateRuleModal } from "./ui/TemplateRuleModal.js";
+import { LSGameData } from "../common/LocalStorage.js";
+import { InputHandler } from "./dom/InputHandler.js";
+import { createStateEditor } from "./dom/StateEditor.js";
+import { TemplateRuleModal } from "./dom/TemplateRuleModal.js";
 
 export class GameManager {
   constructor(board, stateManager, gameEvaluator, config) {
@@ -9,15 +9,17 @@ export class GameManager {
     this.stateManager = stateManager;
     this.board = board;
     this.gameEvaluator = gameEvaluator;
+    gameEvaluator.initialize(this);
 
     this.canvasId = "canvas";
     this.canvas = document.getElementById(this.canvasId);
+    this.canvas.style.userSelect = 'none'; 
     this.isPlaying = false;
     this.animationId = null;
     this.selectedStateId = 2;
     this.speed = 200;
-    this.completeFlag = false;
-
+  
+    
     // フリーモードの場合、前の盤面を引き継げる
     if (this.config.mode === "free") {
       if (localStorage.getItem("shouldClearCache") === "true") {
@@ -31,8 +33,7 @@ export class GameManager {
         this.saveToLocalStorage.bind(this)
       );
     }
-    this.draw();
-
+    
     this.inputHandler = InputHandler(this);
     this.stateEditor = createStateEditor(this);
     this.templateRuleModal = TemplateRuleModal(this);
@@ -40,11 +41,10 @@ export class GameManager {
     if (this.config.mode === "stage") {
       const data = LSGameData.get(this.config.name);
       if (data) {
-        this.updateStageComplete();
+        this.gameEvaluator.updateStageComplete();
       }
     }
 
-    gameEvaluator.initialize(this);
 
     this.draw();
   }
@@ -126,14 +126,7 @@ export class GameManager {
     this.board.nextGeneration(this.stateManager);
     this.draw();
 
-    if (
-      this.gameEvaluator.evaluateTurn() ===1 &&
-      !this.completeFlag &&
-      this.config.mode === "stage"
-    ) {
-      this.stageComplete();
-      this.completeFlag = true;
-    }
+    this.gameEvaluator.evaluateTurn()
 
     this.animationId = setTimeout(() => this.gameLoop(), this.speed);
   }
@@ -195,50 +188,5 @@ export class GameManager {
       this.stateManager.states = data.stateManager.states;
       this.stateManager.nextStateId = data.stateManager.nextStateId;
     }
-  }
-
-  stageComplete() {
-    this.saveToLocalStorage();
-    if (!this.completeFlag) {
-      this.completeFlag = true;
-      this.showCompletionScreen();
-    }
-
-    if (!localStorage.getItem("stageProgress")) {
-      localStorage.setItem(
-        "stageProgress",
-        JSON.stringify({ a: 0, b: 0, c: 0 })
-      );
-    }
-    const progress = LSStageProgress.get();
-    const url = window.location.pathname;
-
-    const path = url.split("/").filter((segment) => segment);
-    progress[path[1]] = Math.max(parseInt(progress[path[1]], 10), path[2]);
-
-    LSStageProgress.set(progress);
-  }
-
-  updateStageComplete() {
-    document.getElementById("clearStatus").innerHTML = "クリア済み";
-    document.getElementById("lastClearData").hidden = false;
-    document.getElementById("lastClearData").addEventListener("click", (e) => {
-      this.loadFromLocalStorage();
-      this.draw();
-    });
-
-    document.getElementById("nextStage").classList.remove("disabled");
-    this.draw();
-  }
-
-  showCompletionScreen(message = "Stage Completed!") {
-    this.updateStageComplete();
-
-    document.getElementById("stageClearMessage").textContent = message;
-
-    var stageClearModal = new bootstrap.Modal(
-      document.getElementById("stageClearModal")
-    );
-    stageClearModal.show();
   }
 }

@@ -32,7 +32,7 @@ class StageB1Evaluator extends GameEvaluator {
 
     this.preBoard = JSON.parse(JSON.stringify(this.gameManager.board.cells));
 
-    return super.evaluateTurn();
+    super.evaluateTurn();
   }
 }
 

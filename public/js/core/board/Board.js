@@ -21,19 +21,20 @@ export default class Board {
   
   // 初期化する
   initializeBoard(history) {
-    if(history){
-      this.historyCells.push(JSON.parse(JSON.stringify(this.cells)))
-    }
-    else{ 
-      this.historyCells = [this.generateCells(1)];
-    }
-
-
+    
+    
     if(this.defaultCells){
       this.cells = JSON.parse(JSON.stringify(this.defaultCells));
     }
     else{
       this.cells = this.generateCells(1);
+    }
+    
+    if(history){
+      this.historyCells.push(JSON.parse(JSON.stringify(this.cells)))
+    }
+    else{ 
+      this.historyCells = [JSON.parse(JSON.stringify(this.cells))];
     }
   }
 
@@ -99,37 +100,12 @@ export default class Board {
     return count;
   }
 
-  //近傍の座標を取得
-  getNeighbors(x, y) {
-    const neighbors = [];
-    const directions = [
-      [-1, -1],
-      [-1, 0],
-      [-1, 1],
-      [0, -1],
-      [0, 1],
-      [1, -1],
-      [1, 0],
-      [1, 1],
-    ];
-
-    for (const [dx, dy] of directions) {
-      const newX = x + dx;
-      const newY = y + dy;
-
-      if(this.isValidCoordinate(newX,newY)){ 
-        neighbors.push({ y: newY, x: newX, value: this.getCell(newX, newY) });
-      }
-    }
-
-    return neighbors;
-  }
-
-
+  
+  
   random(allState){
     const c = allState.length;
     if(c===0) return;
-
+    
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.getWsize(y); x++) {
         const stateid = allState[Math.floor(Math.random() * c)].id;
@@ -137,7 +113,7 @@ export default class Board {
       }
     }
   }
-
+  
   isValidCoordinate(x, y) {
     return 0 <= y && y < this.size && 0 <= x && x < this.getWsize(y);
   }
@@ -146,12 +122,17 @@ export default class Board {
     this.size = newSize;
     this.initializeBoard();
   }
-
+  
+  //近傍のセルをを取得
+  getNeighbors(x, y) {
+    throw new Error("getNeighbors must be overridden in a subclass");
+  }
+  
   // 座標からセルの添字を特定
   getCellPosition(rect, clientX, clientY) {
     throw new Error("getCellPosition must be overridden in a subclass");
   }
-
+  
   getWsize(y) {
     throw new Error("getWsize must be overridden in a subclass");
   }

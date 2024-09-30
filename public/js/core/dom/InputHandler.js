@@ -17,6 +17,8 @@ export function InputHandler(gameManager) {
     canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 
     function handleMouseDown(e) {
+      if(gameManager.isPlaying) return;
+
       const rect = canvas.getBoundingClientRect();
       const { x, y } = gameManager.board.getCellPosition(
         rect,
@@ -43,6 +45,7 @@ export function InputHandler(gameManager) {
 
     function handleMouseMove(e) {
       if (gameManager.isPlaying) return;
+
       const rect = canvas.getBoundingClientRect();
       const { x, y } = gameManager.board.getCellPosition(
         rect,
@@ -128,10 +131,6 @@ export function InputHandler(gameManager) {
     function handleSizeBlur(e) {
       let val = Math.min(100, Math.max(e.target.value, 1));
       e.target.value = val;
-    }
-
-    function handleShapeChange(e) {
-      gameManager.reshapeBoard(e.target.value);
     }
   }
 

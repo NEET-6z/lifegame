@@ -1,10 +1,13 @@
 //complete 0:評価中 1:条件を満たした -1:条件に反した -2:初期条件に反した
 
+import { LSStageProgress } from "../../common/LocalStorage.js";
+
 
 export class GameEvaluator{
 
 	constructor(){
-		this.gameManager = null;
+		this.completeFlag = false;
+		this.gameManager = null; 
 		this.board = null;
 		this.gameInfo = {};
 	}
@@ -50,10 +53,59 @@ export class GameEvaluator{
 	evaluateTurn(){
 		this.updateInfo(this.gameInfo);
 		this.gameInfo["turn"]++;
-		return this.gameInfo["complete"];
+
+		if(this.gameInfo['complete']==1) {
+			this.stageComplete();
+		}
+
+		return this.gameInfo['complete'];
 	}
 
 	cmis0(){
 		return (this.gameInfo["complete"]===0);
 	}
-}
+
+
+	//条件を満たしたときの処理
+	stageComplete() {
+    this.gameManager.saveToLocalStorage();
+    if (!this.completeFlag) {
+      this.completeFlag = true;
+      this.showCompletionScreen();
+    }
+
+    const progress = LSStageProgress.get();
+    const url = window.location.pathname;
+
+    const path = url.split("/").filter((segment) => segment);
+    progress[path[1]] = Math.max(parseInt(progress[path[1]], 10), path[2]);
+
+    LSStageProgress.set(progress);
+  }
+
+	
+  showCompletionScreen(message = "Stage Completed!") {
+    this.updateStageComplete();
+		
+    document.getElementById("stageClearMessage").textContent = message;
+		
+    var stageClearModal = new bootstrap.Modal(
+			document.getElementById("stageClearModal")
+    );
+    stageClearModal.show();
+  }
+
+
+	//クリア状況を画面に更新
+	updateStageComplete() {
+		document.getElementById("clearStatus").innerHTML = "クリア済み";
+		document.getElementById("lastClearData").hidden = false;
+		document.getElementById("lastClearData").addEventListener("click", (e) => {
+			this.gameManager.loadFromLocalStorage();
+			this.gameManager.draw();
+		});
+		
+		document.getElementById("nextStage").classList.remove("disabled");
+		this.gameManager.draw();
+	}
+} 

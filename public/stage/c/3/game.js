@@ -31,7 +31,7 @@ class StageC3Evaluator extends GameEvaluator {
       }
     }
 
-    return super.evaluateTurn();
+    super.evaluateTurn();
 
   }
 }
