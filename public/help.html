@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAS - Help</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/layout.css">
+</head>
+
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <header id="header"></header>
+  <div class="container mt-4">
+    <main class="content-wrapper bg-white p-4 shadow-sm rounded">
+      <h1 class="mb-4">ヘルプ</h1>
+
+      <section id="overview" class="mb-4">
+        <h2 class="border-bottom pb-2 mb-3">サイトの概要</h2>
+        <p>
+          CASはカスタマイズ性の高いセルオートマトンシミュレーターです。
+        </p>
+      </section>
+
+      <section id="game-modes" class="mb-4">
+        <h2 class="border-bottom pb-2 mb-3">ゲームモード</h2>
+        <p>CASには以下の2つのゲームモードがあります：</p>
+        <ul>
+          <li><strong>フリーモード</strong>: 盤面の形状やサイズの変更、状態の追加やルールの編集もできます。</li>
+          <li><strong>ステージモード</strong>: A1~A5, B1~B5, C1~C5の計15種類のステージが用意されています。各ステージの流れは以下の通りです：
+            <ol>
+              <li>問題文の条件を満たすような配置を探す。</li>
+              <li>できたと思ったら「Start」ボタンを押して検証。</li>
+              <li>条件を満たしていればクリア。</li>
+            </ol>
+            クリアすると、そのアルファベットの次のステージが開放されます(A1クリア→A2開放, B3クリア→B4開放)。
+          </li>
+        </ul>
+      </section>
+
+      <section id="playing-puzzles" class="mb-4">
+        <h2 class="border-bottom pb-2 mb-3">基本操作</h2>
+        <p>CASの基本的な操作方法を説明します。</p>
+
+        <h4>ボードの操作方法</h4>
+        <p>ゲームボードの基本操作は以下の通りです：</p>
+        <ul>
+          <li><strong>状態の塗りつぶし</strong>:
+            <ul>
+              <li><strong>左ドラッグ</strong>: 左クリックを押しながらドラッグすると、選択中の状態（デフォルトは「生存」）を塗りつぶします。</li>
+              <li><strong>右ドラッグ</strong>: 右クリックを押しながらドラッグすると、「死滅」状態を塗りつぶします。</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h4>選択中の状態</h4>
+        <div>
+          この青枠で囲われているものが現在選択中の状態です。枠をクリックすることで変更できます。
+          <div class="text-center my-3">
+            <img src="/images/help1.png" alt="選択中の状態の説明" style="max-width: 100%; height: auto;">
+          </div>
+          もし左ドラッグしても生存マスを塗れない場合は、選択中の状態が「Dead」になっている可能性があります。
+        </div>
+
+        <h4>ショートカットキー</h4>
+        <ul>
+          <li>space: Start/Stop</li>
+          <li>z: Undo</li>
+          <li>x: 選択中の状態を変更</li>
+          <li>c: Clear</li>
+        </ul>
+
+      </section>
+
+      <section id="troubleshooting" class="mb-4">
+        <h2 class="border-bottom pb-2 mb-3">トラブルシューティング</h2>
+        <p>問題が発生した場合は、以下のヒントを参考にしてください：</p>
+        <ul>
+          <li>ご利用のブラウザが最新バージョンになっているかご確認ください。</li>
+          <li>ゲーム画面に不具合が発生した場合は、右上にある「キャッシュをクリアしてリロード」ボタンを押してみてください。</li>
+        </ul>
+      </section>
+
+      <section id="customize" class="mb-4">
+        <h2 class="border-bottom pb-2 mb-3">カスタマイズ機能</h2>
+        <div>
+          フリーモードでしか使えない機能です。
+
+          <h3>ルール編集</h3>
+          <div>
+            複数の遷移ルールがあり、各遷移ルールには複数の条件式を設定できます。条件を満たしたならその遷移先を適用し、以降の遷移ルールはスルーする。
+            もし、条件を満たさないならその遷移ルールは破棄され、次の遷移ルールへ移る。すべての遷移ルールの条件を満たさなかった場合は、デフォルトの遷移先に遷移する (if elif elseみたいな)
+          </div>
+          <h4>遷移ルールの条件について</h4>
+          <div>
+            条件式は、1近傍にある状態の個数や数値などの大小関係を指定できます。
+            条件式は複数追加することができ、すべての条件式を満たした場合、もしくは、一つ以上の条件式を満たした場合、その遷移ルールが適用されます。
+          </div>
+          <h4>パラメータについて</h4>
+          <div>
+            下にあるスロットに設定した値の総和を条件式で使うことができます。
+            例えば、「周りにあるAliveの個数がEnemyの個数の2倍以上なら、Aliveに遷移する」みたいなルールを定義したいときは、Aliveのパラメータに1を、Enemyのパラメータに-2を指定して、総和が0以上ならAliveに遷移する
+            とすればいいです。
+          </div>
+
+          <h3>テンプレート機能</h3>
+          <div>
+            ルールのテンプレートです。2状態テンプレートを大量に用意してあるので興味ある方は読み込んでみてください。
+            また、ユーザーが作ったルールをテンプレートに保存することもできます。
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/header.js"></script>
+  <script src="/js/conwaysLife.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
