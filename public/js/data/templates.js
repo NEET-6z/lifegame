@@ -65,59 +65,39 @@ export const templates = [
   { title: 'Vote', description: 'RPGマップのような形に安定する。周りのセルの多いほうの状態に変化するので「Vote」', rule: Vote, bsRule: "B5678/S45678" },
 ];
 
+
+
+function getMultirange(str=""){
+  const list = []
+  for(let l = 0;l<str.length;l++){
+    let r = l;
+    for(let i = l;i<str.length;i++){
+      if(i-l===str[i]-str[l]) r = i;
+    }
+    list.push(
+      {
+        target: {
+          type: "state",
+          value: 2,
+        },
+        min: {
+          type: "number",
+          value: str[l]-'0',
+        },
+        max: {
+          type: "number",
+          value: str[r]-'0',
+        }
+      }
+    )
+    l = r;
+  }
+  return list;
+}
+
 export function bsToMultiRange(B = "", S = "") {
-  const Dcon = [];
-
-  for(let l = 0;l<B.length;l++){
-    let r = l;
-    for(let i = l;i<B.length;i++){
-      if(i-l===B[i]-B[l]) r = i;
-    }
-    Dcon.push(
-      {
-        target: {
-          type: "state",
-          value: 2,
-        },
-        min: {
-          type: "number",
-          value: B[l]-'0',
-        },
-        max: {
-          type: "number",
-          value: B[r]-'0',
-        }
-      }
-    )
-    l = r;
-  }
-
-  
-  const Acon = [];
-  
-  for(let l = 0;l<S.length;l++){
-    let r = l;
-    for(let i = l;i<S.length;i++){
-      if(i-l===S[i]-S[l]) r = i;
-    }
-    Acon.push(
-      {
-        target: {
-          type: "state",
-          value: 2,
-        },
-        min: {
-          type: "number",
-          value: S[l]-'0',
-        },
-        max: {
-          type: "number",
-          value: S[r]-'0',
-        }
-      }
-    )
-    l = r;
-  }
+  const Dcon = getMultirange(B);  
+  const Acon = getMultirange(S);
   
   const Dead = new State(1, "Dead", "white", true, 1, [
     {

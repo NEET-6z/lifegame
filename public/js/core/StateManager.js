@@ -17,16 +17,14 @@ export class State {
     this.transitionRules = transitionRules;
     this.params = params;
   }
-
-  addTransitionRule(rule) {
-    this.transitionRules.push(rule);
-  }
 }
 
 //すべての状態を管理する
 export class StateManager {
   constructor(template) {
     this.states = {};
+
+    //1~10は直接setするときに使う。ユーザーが追加できるのは11から
     this.nextStateId = 11;
 
     this.paramSlot = [1, 2, 3, 4, 5];

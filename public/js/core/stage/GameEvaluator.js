@@ -54,7 +54,8 @@ export class GameEvaluator{
 		this.updateInfo(this.gameInfo);
 		this.gameInfo["turn"]++;
 
-		if(this.gameInfo['complete']==1) {
+		if(this.gameInfo['complete']==1 && !this.completeFlag) {
+			this.completeFlag = true;
 			this.stageComplete();
 		}
 
@@ -69,10 +70,7 @@ export class GameEvaluator{
 	//条件を満たしたときの処理
 	stageComplete() {
     this.gameManager.saveToLocalStorage();
-    if (!this.completeFlag) {
-      this.completeFlag = true;
-      this.showCompletionScreen();
-    }
+		this.showCompletionScreen();
 
     const progress = LSStageProgress.get();
     const url = window.location.pathname;
