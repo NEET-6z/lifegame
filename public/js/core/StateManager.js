@@ -28,14 +28,14 @@ export class StateManager {
     this.nextStateId = 11;
 
     this.paramSlot = [1, 2, 3, 4, 5];
-    this.initializeStates();
+    this.initialize();
 
     if (template) {
       this.setTemplate(template);
     }
   }
 
-  initializeStates() {
+  initialize() {
     this.nextStateId = 11;
     this.states = {};
     this.setState(new State(0, "Null", "#eee", false, 0, []));
@@ -136,7 +136,7 @@ export class StateManager {
   }
 
   setTemplate(tp) {
-    this.initializeStates();
+    this.initialize();
     tp.forEach((s) => {
       this.setState(s);
     });
