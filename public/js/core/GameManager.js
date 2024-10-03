@@ -104,7 +104,7 @@ export class GameManager {
 
   clear() {
     this.stop();
-    this.board.initializeBoard(1);
+    this.board.initialize(1);
     this.draw();
   }
 
