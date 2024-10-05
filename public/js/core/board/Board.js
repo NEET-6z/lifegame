@@ -10,7 +10,7 @@ export default class Board {
     this.startCells = undefined;
     this.cells = undefined;
 
-    this.initializeBoard();
+    this.initialize();
 
 
     this.gridColor = "#555555";
@@ -20,7 +20,7 @@ export default class Board {
   }
   
   // 初期化する
-  initializeBoard(history) {
+  initialize(history) {
     
     
     if(this.defaultCells){
@@ -120,7 +120,7 @@ export default class Board {
 
   resize(newSize) {
     this.size = newSize;
-    this.initializeBoard();
+    this.initialize();
   }
   
   //近傍のセルをを取得

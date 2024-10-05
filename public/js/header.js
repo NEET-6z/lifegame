@@ -10,7 +10,7 @@ document.getElementById("header").innerHTML = `<nav class="navbar navbar-expand-
                     <a class="nav-link active" aria-current="page" href='/'>Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href='/help.html'>help</a>
+                    <a class="nav-link" href='/help.html'>Help</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href='/about.html'>About</a>

@@ -17,27 +17,25 @@ export class State {
     this.transitionRules = transitionRules;
     this.params = params;
   }
-
-  addTransitionRule(rule) {
-    this.transitionRules.push(rule);
-  }
 }
 
 //すべての状態を管理する
 export class StateManager {
   constructor(template) {
     this.states = {};
+
+    //1~10は直接setするときに使う。ユーザーが追加できるのは11から
     this.nextStateId = 11;
 
     this.paramSlot = [1, 2, 3, 4, 5];
-    this.initializeStates();
+    this.initialize();
 
     if (template) {
       this.setTemplate(template);
     }
   }
 
-  initializeStates() {
+  initialize() {
     this.nextStateId = 11;
     this.states = {};
     this.setState(new State(0, "Null", "#eee", false, 0, []));
@@ -138,7 +136,7 @@ export class StateManager {
   }
 
   setTemplate(tp) {
-    this.initializeStates();
+    this.initialize();
     tp.forEach((s) => {
       this.setState(s);
     });

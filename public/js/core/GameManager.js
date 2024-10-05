@@ -13,13 +13,12 @@ export class GameManager {
 
     this.canvasId = "canvas";
     this.canvas = document.getElementById(this.canvasId);
-    this.canvas.style.userSelect = 'none'; 
+    this.canvas.style.userSelect = "none";
     this.isPlaying = false;
     this.animationId = null;
     this.selectedStateId = 2;
     this.speed = 200;
-  
-    
+
     // フリーモードの場合、前の盤面を引き継げる
     if (this.config.mode === "free") {
       if (localStorage.getItem("shouldClearCache") === "true") {
@@ -33,7 +32,7 @@ export class GameManager {
         this.saveToLocalStorage.bind(this)
       );
     }
-    
+
     this.inputHandler = InputHandler(this);
     this.stateEditor = createStateEditor(this);
     this.templateRuleModal = TemplateRuleModal(this);
@@ -44,7 +43,6 @@ export class GameManager {
         this.gameEvaluator.updateStageComplete();
       }
     }
-
 
     this.draw();
   }
@@ -70,12 +68,8 @@ export class GameManager {
         JSON.parse(JSON.stringify(this.board.cells))
       );
       this.gameEvaluator.start();
-      this.startGameLoop();
+      this.gameLoop();
     }
-  }
-
-  startGameLoop() {
-    this.gameLoop();
   }
 
   stopGameLoop() {
@@ -110,7 +104,7 @@ export class GameManager {
 
   clear() {
     this.stop();
-    this.board.initializeBoard(1);
+    this.board.initialize(1);
     this.draw();
   }
 
@@ -126,7 +120,7 @@ export class GameManager {
     this.board.nextGeneration(this.stateManager);
     this.draw();
 
-    this.gameEvaluator.evaluateTurn()
+    this.gameEvaluator.evaluateTurn();
 
     this.animationId = setTimeout(() => this.gameLoop(), this.speed);
   }
@@ -141,7 +135,7 @@ export class GameManager {
     this.speed = newSpeed;
     if (this.isPlaying) {
       this.stopGameLoop();
-      this.startGameLoop();
+      this.gameLoop();
     }
   }
 
