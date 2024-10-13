@@ -137,7 +137,7 @@ export default class Board {
     throw new Error("getWsize must be overridden in a subclass");
   }
 
-  render(canvas, stateManager, isPlaying) {
+  render(canvas, stateManager) {
     throw new Error("render must be overridden in a subclass");
   }
 }
