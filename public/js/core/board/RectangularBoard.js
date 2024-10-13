@@ -47,7 +47,7 @@ export class RectangularBoard extends Board {
     return { x: -1, y: -1 };
   }
 
-  render(canvas, stateManager, isPlaying) {
+  render(canvas, stateManager) {
     const rect = canvas.getBoundingClientRect();
     const ctx = canvas.getContext("2d");
 

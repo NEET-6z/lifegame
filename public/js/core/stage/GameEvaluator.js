@@ -82,10 +82,8 @@ export class GameEvaluator{
   }
 
 	
-  showCompletionScreen(message = "Stage Completed!") {
+  showCompletionScreen() {
     this.updateStageComplete();
-		
-    document.getElementById("stageClearMessage").textContent = message;
 		
     var stageClearModal = new bootstrap.Modal(
 			document.getElementById("stageClearModal")

@@ -98,12 +98,9 @@ export class TriangularBoard extends Board {
     return { x: -1, y: -1 };
   }
 
-  render(canvas, stateManager, isPlaying) {
+  render(canvas, stateManager) {
     const rect = canvas.getBoundingClientRect();
     const ctx = canvas.getContext("2d");
-
-    const gridColor = "#555555";
-    const gridLineWidth = 1;
 
     canvas.width = rect.width;
     canvas.height = rect.height;
